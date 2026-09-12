@@ -1,0 +1,1072 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>고급 재무 전시물 아틀라스 · 서린푸드 판</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root{
+  --paper:#EDF0F3; --panel:#F7F8FA; --plot:#FFFFFF;
+  --ink:#0F1E2B; --ink-2:#3E5364; --ink-3:#758798;
+  --rule:#C6D0D8; --rule-soft:#DDE3E8; --grid:#DCE3E8;
+  --c-navy:#1B3A57; --c-ochre:#B3762B; --c-teal:#2E6F6B; --c-clay:#8C3B36;
+  --c-slate:#7A8C9B; --c-sand:#C9B893; --maxw:1150px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);
+  font-family:'Pretendard Variable',Pretendard,-apple-system,'Malgun Gothic',sans-serif;
+  font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 34px}
+.mast{border-bottom:2px solid var(--ink);padding:46px 0 30px;background:var(--panel)}
+.mast .kick{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;letter-spacing:.12em;color:var(--ink-3);
+  border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:28px}
+.mast h1{font-family:'Noto Serif KR',serif;font-weight:900;font-size:42px;line-height:1.3}
+.mast .sub{margin-top:14px;font-size:16.5px;color:var(--ink-2);max-width:48em}
+.mast .meta{display:flex;gap:32px;flex-wrap:wrap;margin-top:22px;font-size:13px;color:var(--ink-3)}
+.mast .meta b{color:var(--ink-2);font-weight:600;margin-right:7px}
+
+nav.toc{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
+nav.toc .wrap{display:flex;gap:0;overflow-x:auto}
+nav.toc a{padding:11px 18px 10px;font-size:13px;font-weight:600;color:var(--ink-2);
+  text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav.toc a:hover{color:var(--ink);border-bottom-color:var(--c-ochre)}
+
+.sect{margin:66px 0 0}
+.sect-head{display:grid;grid-template-columns:110px 1fr;gap:24px;
+  border-top:2px solid var(--ink);padding-top:20px}
+.sect-head .num{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-3);padding-top:7px}
+.sect-head h2{font-family:'Noto Serif KR',serif;font-weight:700;font-size:27px}
+.sect-head p{margin-top:10px;color:var(--ink-2);max-width:62em}
+
+.ex{margin:36px 0 0;background:var(--plot);border:1px solid var(--rule)}
+.ex-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  padding:18px 28px 14px;border-bottom:1px solid var(--rule-soft)}
+.ex-no{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;
+  letter-spacing:.1em;color:var(--plot);background:var(--ink);padding:3px 10px;border-radius:2px}
+.ex-head h3{font-family:'Noto Serif KR',serif;font-weight:700;font-size:20px;flex:1;min-width:280px}
+.ex-head .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3)}
+.ex-chart{padding:16px 22px 6px}
+.ex-chart svg{width:100%;height:auto;display:block}
+.ex-notes{display:flex;gap:30px;flex-wrap:wrap;padding:12px 28px 16px;
+  border-top:1px solid var(--rule-soft);font-size:13px;color:var(--ink-2)}
+.ex-notes .q b,.ex-notes .w b{font-weight:700}
+.ex-notes .q{max-width:34em}
+.ex-notes .q b{color:var(--c-navy)}
+.ex-notes .w{max-width:34em}
+.ex-notes .w b{color:var(--c-clay)}
+
+svg text{font-family:'Pretendard Variable',Pretendard,sans-serif}
+svg .t{font-size:13.5px;font-weight:700;fill:var(--ink)}
+svg .l{font-size:12.5px;fill:var(--ink-2)}
+svg .lb{font-size:12.5px;fill:var(--ink-2)}
+svg .ls{font-size:11.5px;fill:var(--ink-3)}
+svg .f{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;font-size:12.5px;fill:var(--ink)}
+svg .fw{font-family:'IBM Plex Mono',ui-monospace,Consolas,monospace;font-size:12px;fill:#fff;font-weight:700}
+
+.tblw{margin:0;border:0;background:var(--plot)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;table-layout:fixed}
+th,td{text-align:left;padding:12px 18px;border-bottom:1px solid var(--rule-soft);
+  vertical-align:top;word-break:keep-all}
+th{font-size:12px;color:var(--ink-3);font-weight:600;background:var(--panel);white-space:nowrap}
+td.num{font-family:'IBM Plex Mono',monospace;text-align:right;white-space:nowrap}
+th.num{text-align:right}
+tr.tot td{border-top:2px solid var(--ink);font-weight:700;border-bottom:0}
+
+.method{margin:56px 0 0;padding:24px 0 0;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink-3);max-width:76em}
+footer{margin:46px 0 0;padding:20px 0 64px;border-top:2px solid var(--ink);
+  display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;color:var(--ink-3);letter-spacing:.08em}
+@media print{body{background:#fff}.ex{break-inside:avoid}.sect{break-before:page}}
+</style></head><body>
+
+<header class="mast"><div class="wrap">
+  <div class="kick"><span>EXHIBIT ATLAS · SEORIN EDITION</span><span>2026.09 · 예시 데이터</span></div>
+  <h1>딜과 컨설팅의 전시물 27종,<br>한 회사의 숫자로 전부 그렸습니다</h1>
+  <p class="sub">유형 카탈로그가 아닙니다. 매출 320억 식품회사 서린푸드(가칭) 하나를 27개 각도에서 자른 것이라, 전시물끼리 숫자가 이어지고 제목이 곧 발견입니다. 제목만 위에서 아래로 읽어도 한 편의 진단이 됩니다.</p>
+  <div class="meta">
+    <span><b>수록</b>가치평가 6 · 딜 구조 4 · 실적 분해 6 · 시장 6 · 고객과 실행 5</span>
+    <span><b>기준</b>2025 회계연도 · 억원</span>
+    <span><b>주의</b>회사명과 숫자는 전부 예시</span>
+  </div>
+</div></header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#p1">I 가치평가</a><a href="#p2">II 딜 구조</a><a href="#p3">III 실적·현금 분해</a>
+  <a href="#p4">IV 시장·경쟁</a><a href="#p5">V 고객·실행</a>
+</div></nav>
+
+<div class="wrap">
+
+<section class="sect" id="p1"><div class="sect-head"><div class="num">PART I</div><div><h2>가치평가 · 값은 범위로 말한다</h2><p>한 숫자를 내놓는 순간 방어할 수 없게 됩니다. 범위, 분포, 흔들리는 폭, 그리고 그 범위가 동종 대비 싼지까지가 한 세트입니다.</p></div></div>
+<figure class="ex" id="e01"><div class="ex-head"><span class="ex-no">EXHIBIT 01</span><h3>제시가 380억은 다섯 방법 중 셋의 범위 안입니다</h3><span class="tag">Football Field</span></div><div class="ex-chart"><svg viewBox="0 0 1080 330" role="img" aria-label="다섯 가지 방법의 가치 범위와 제시가">
+<line x1="392.8" y1="34.0" x2="392.8" y2="300.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="392.8" y="318.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">250</text>
+<line x1="508.8" y1="34.0" x2="508.8" y2="300.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="508.8" y="318.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">300</text>
+<line x1="624.8" y1="34.0" x2="624.8" y2="300.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="624.8" y="318.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">350</text>
+<line x1="740.8" y1="34.0" x2="740.8" y2="300.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="740.8" y="318.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">400</text>
+<line x1="856.8" y1="34.0" x2="856.8" y2="300.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="856.8" y="318.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">450</text>
+<line x1="972.8" y1="34.0" x2="972.8" y2="300.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="972.8" y="318.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">500</text>
+<rect x="369.6" y="56.0" width="208.8" height="20.0" rx="3" fill="var(--c-slate)" opacity="0.55"/>
+<text x="284.0" y="70.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">52주 주가 범위</text>
+<text x="361.6" y="70.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">240</text>
+<text x="586.4" y="70.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">330</text>
+<rect x="536.6" y="108.0" width="278.4" height="20.0" rx="3" fill="var(--c-navy)" opacity="0.95"/>
+<text x="284.0" y="122.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">상장사 배수  EV/EBITDA 6.5~9.0x</text>
+<text x="528.6" y="122.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">312</text>
+<text x="823.0" y="122.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">432</text>
+<rect x="615.5" y="160.0" width="322.5" height="20.0" rx="3" fill="var(--c-navy)" opacity="0.7"/>
+<text x="284.0" y="174.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">유사거래  7.2~10.1x</text>
+<text x="607.5" y="174.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">346</text>
+<text x="946.0" y="174.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">485</text>
+<rect x="434.6" y="212.0" width="334.1" height="20.0" rx="3" fill="var(--c-teal)" opacity="0.9"/>
+<text x="284.0" y="226.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">현금흐름할인  WACC 9.5~11.5%</text>
+<text x="426.6" y="226.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">268</text>
+<text x="776.6" y="226.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">412</text>
+<rect x="369.6" y="264.0" width="208.8" height="20.0" rx="3" fill="var(--c-ochre)" opacity="0.85"/>
+<text x="284.0" y="278.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">차입매수 여력  IRR 20~25%</text>
+<text x="361.6" y="278.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">240</text>
+<text x="586.4" y="278.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">330</text>
+<rect x="691.4" y="26.0" width="6.0" height="274.0" rx="0" fill="var(--c-ochre)" opacity="0.15"/>
+<line x1="694.4" y1="26.0" x2="694.4" y2="300.0" stroke="var(--c-ochre)" stroke-width="1.6"/>
+<text x="694.4" y="20.0" class="f" text-anchor="middle" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">제시가 380억</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 방법마다 나온 가치 범위가 어디서 겹치는가.</div><div class="w"><b>함정.</b> 방법 이름 옆에 가정을 함께 적습니다. EV인지 지분가치인지 섞이면 그림이 통째로 틀립니다.</div></div></figure>
+<figure class="ex" id="e02"><div class="ex-head"><span class="ex-no">EXHIBIT 02</span><h3>EV 381억이 주주 손에 오면 305억입니다</h3><span class="tag">EV-to-Equity Bridge</span></div><div class="ex-chart"><svg viewBox="0 0 1080 340" role="img" aria-label="기업가치에서 지분가치로 가는 다리">
+<rect x="104.0" y="67.7" width="104.0" height="212.3" rx="2" fill="var(--c-navy)"/>
+<text x="156.0" y="57.7" class="f" text-anchor="middle" style="font-size:15px;font-weight:800;">381</text>
+<line x1="208.0" y1="67.7" x2="306.0" y2="67.7" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="156.0" y="300.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">기업가치 EV</text>
+<rect x="306.0" y="67.7" width="84.0" height="45.7" rx="2" fill="var(--c-clay)" opacity="0.85"/>
+<text x="348.0" y="59.7" class="f" text-anchor="middle" style="fill:var(--c-clay);font-size:13px;font-weight:700;">-82</text>
+<line x1="390.0" y1="113.4" x2="498.0" y2="113.4" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="348.0" y="300.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">순차입금</text>
+<rect x="498.0" y="113.4" width="84.0" height="6.7" rx="2" fill="var(--c-clay)" opacity="0.85"/>
+<text x="540.0" y="105.4" class="f" text-anchor="middle" style="fill:var(--c-clay);font-size:13px;font-weight:700;">-12</text>
+<line x1="582.0" y1="120.1" x2="690.0" y2="120.1" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="540.0" y="300.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">소수주주지분</text>
+<rect x="690.0" y="110.1" width="84.0" height="10.0" rx="2" fill="var(--c-teal)" opacity="0.85"/>
+<text x="732.0" y="102.1" class="f" text-anchor="middle" style="fill:var(--c-teal);font-size:13px;font-weight:700;">+18</text>
+<line x1="774.0" y1="110.1" x2="872.0" y2="110.1" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="732.0" y="300.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">비영업자산</text>
+<rect x="872.0" y="110.1" width="104.0" height="169.9" rx="2" fill="var(--ink)"/>
+<text x="924.0" y="100.1" class="f" text-anchor="middle" style="font-size:15px;font-weight:800;">305</text>
+<text x="924.0" y="300.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">지분가치</text>
+<line x1="60.0" y1="280.0" x2="1020.0" y2="280.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="60.0" y="326.0" class="ls" text-anchor="start">순차입금 정의(리스부채·우선주 포함 여부)를 각주로 못 박습니다. 여기서 분쟁이 납니다.</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 기업가치와 지분가치 사이에서 누가 얼마를 먼저 가져가는가.</div><div class="w"><b>함정.</b> 순차입금에 리스부채·우선주를 넣었는지가 협상 단골 분쟁입니다. 각주로 못 박습니다.</div></div></figure>
+<figure class="ex" id="e03"><div class="ex-head"><span class="ex-no">EXHIBIT 03</span><h3>성장 대비 0.4배 싸게 평가받고 있습니다</h3><span class="tag">Multiple Regression Scatter</span></div><div class="ex-chart"><svg viewBox="0 0 1080 360" role="img" aria-label="성장률과 EV/EBITDA 배수의 회귀 산점도">
+<line x1="70.0" y1="264.7" x2="1020.0" y2="264.7" stroke="var(--grid)" stroke-width="1"/>
+<text x="62.0" y="268.7" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">6x</text>
+<line x1="70.0" y1="162.2" x2="1020.0" y2="162.2" stroke="var(--grid)" stroke-width="1"/>
+<text x="62.0" y="166.2" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">8x</text>
+<line x1="70.0" y1="59.6" x2="1020.0" y2="59.6" stroke="var(--grid)" stroke-width="1"/>
+<text x="62.0" y="63.6" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">10x</text>
+<line x1="70.0" y1="316.0" x2="1020.0" y2="316.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="70.0" y1="248.3" x2="1020.0" y2="100.1" stroke="var(--c-slate)" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="103.5" y="231.1" class="ls" text-anchor="start" style="fill:var(--ink-2);font-weight:700;">회귀선 · R² 0.62 · 표본 5</text>
+<circle cx="187.4" cy="244.2" r="28.0" fill="var(--c-slate)"/>
+<text x="187.4" y="208.2" class="l" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:650;">명진</text>
+<circle cx="304.7" cy="121.2" r="24.8" fill="var(--c-slate)"/>
+<text x="304.7" y="88.4" class="l" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:650;">대한</text>
+<circle cx="405.3" cy="198.1" r="21.1" fill="var(--c-slate)"/>
+<text x="405.3" y="168.9" class="l" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:650;">세일</text>
+<circle cx="617.6" cy="146.8" r="19.5" fill="var(--c-slate)"/>
+<text x="617.6" y="119.3" class="l" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:650;">한울</text>
+<circle cx="885.9" cy="131.4" r="15.8" fill="var(--c-slate)"/>
+<text x="885.9" y="107.6" class="l" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:650;">가온</text>
+<circle cx="712.6" cy="167.3" r="13.0" fill="var(--c-navy)"/>
+<text x="712.6" y="143.3" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:800;">서린푸드 7.9x</text>
+<line x1="712.6" y1="159.3" x2="712.6" y2="152.1" stroke="var(--c-ochre)" stroke-width="1.6" stroke-dasharray="3 3"/>
+<text x="712.6" y="197.3" class="f" text-anchor="middle" style="fill:var(--c-ochre);font-size:12px;font-weight:700;">회귀선 대비 0.4x 할인</text>
+<text x="1020.0" y="344.0" class="lb" text-anchor="end" style="fill:var(--ink);font-weight:700;">매출 성장률 (%)</text>
+<text x="70.0" y="24.0" class="ls" text-anchor="start">EV/EBITDA · 원 크기 = 매출</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 우리 배수가 싼 것인가, 성장이 느려서 그 배수인 것인가.</div><div class="w"><b>함정.</b> 점 다섯 개로 회귀선을 긋는 건 장식입니다. R²와 표본 수를 함께 적고, 낮으면 선을 지웁니다.</div></div></figure>
+<figure class="ex" id="e04"><div class="ex-head"><span class="ex-no">EXHIBIT 04</span><h3>열 번 중 한 번은 318억 아래입니다</h3><span class="tag">Monte Carlo Value Distribution</span></div><div class="ex-chart"><svg viewBox="0 0 1080 360" role="img" aria-label="시뮬레이션 1만 회의 가치 분포와 누적확률">
+<rect x="61.5" y="312.5" width="45.0" height="7.5" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="109.5" y="302.4" width="45.0" height="17.6" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="157.5" y="284.9" width="45.0" height="35.1" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="205.5" y="254.8" width="45.0" height="65.2" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="253.5" y="214.6" width="45.0" height="105.4" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="301.5" y="161.9" width="45.0" height="158.1" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="349.5" y="106.7" width="45.0" height="213.3" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="397.5" y="64.1" width="45.0" height="255.9" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="445.5" y="44.0" width="45.0" height="276.0" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="493.5" y="56.5" width="45.0" height="263.5" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="541.5" y="89.2" width="45.0" height="230.8" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="589.5" y="134.3" width="45.0" height="185.7" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="637.5" y="179.5" width="45.0" height="140.5" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="685.5" y="219.6" width="45.0" height="100.4" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="733.5" y="252.3" width="45.0" height="67.7" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="781.5" y="277.3" width="45.0" height="42.7" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="829.5" y="294.9" width="45.0" height="25.1" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="877.5" y="304.9" width="45.0" height="15.1" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="925.5" y="312.5" width="45.0" height="7.5" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<rect x="973.5" y="315.0" width="45.0" height="5.0" rx="2" fill="var(--c-slate)" opacity="0.4"/>
+<polyline points="108.0,319.1 156.0,316.9 204.0,312.5 252.0,304.4 300.0,291.3 348.0,271.6 396.0,245.1 444.0,213.2 492.0,178.9 540.0,146.1 588.0,117.4 636.0,94.3 684.0,76.8 732.0,64.3 780.0,55.9 828.0,50.6 876.0,47.4 924.0,45.6 972.0,44.6 1020.0,44.0" fill="none" stroke="var(--c-ochre)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="274.2" y1="36.0" x2="274.2" y2="320.0" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="274.2" y="30.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11.5px;font-weight:600;">P10  318</text>
+<line x1="506.8" y1="36.0" x2="506.8" y2="320.0" stroke="var(--ink)" stroke-width="2"/>
+<text x="506.8" y="30.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:800;">P50  381억</text>
+<line x1="768.9" y1="36.0" x2="768.9" y2="320.0" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="768.9" y="30.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11.5px;font-weight:600;">P90  452</text>
+<line x1="60.0" y1="320.0" x2="1020.0" y2="320.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="60.0" y="340.0" class="f" text-anchor="start" style="fill:var(--ink-3);font-size:11px;">260억</text>
+<text x="1020.0" y="340.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">520억</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 이 가치가 나올 확률이 얼마나 되는가.</div><div class="w"><b>함정.</b> 분포는 가정의 결과지 사실이 아닙니다. 어떤 분포를 몇 회 돌렸는지 출처에 적습니다.</div></div></figure>
+<figure class="ex" id="e05"><div class="ex-head"><span class="ex-no">EXHIBIT 05</span><h3>WACC 하나가 137억을 흔듭니다</h3><span class="tag">Tornado Diagram</span></div><div class="ex-chart"><svg viewBox="0 0 1080 340" role="img" aria-label="가정별 일변량 토네이도">
+<line x1="614.7" y1="24.0" x2="614.7" y2="306.0" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="614.7" y="324.0" class="f" text-anchor="middle" style="font-size:12.5px;font-weight:800;">기준 EV 381억</text>
+<rect x="373.8" y="42.5" width="240.9" height="20.0" rx="2" fill="var(--c-slate)" opacity="0.45"/>
+<rect x="614.7" y="42.5" width="291.4" height="20.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="284.0" y="56.5" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">WACC ±1.0%p</text>
+<text x="365.8" y="56.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">319</text>
+<text x="914.2" y="56.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">456</text>
+<rect x="471.0" y="87.5" width="143.8" height="20.0" rx="2" fill="var(--c-slate)" opacity="0.45"/>
+<rect x="614.7" y="87.5" width="143.8" height="20.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="284.0" y="101.5" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">EBITDA 마진 ±1.0%p</text>
+<text x="463.0" y="101.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">344</text>
+<text x="766.5" y="101.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">418</text>
+<rect x="517.6" y="132.5" width="97.1" height="20.0" rx="2" fill="var(--c-slate)" opacity="0.45"/>
+<rect x="614.7" y="132.5" width="120.5" height="20.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="284.0" y="146.5" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">영구성장률 ±0.5%p</text>
+<text x="509.6" y="146.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">356</text>
+<text x="743.2" y="146.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">412</text>
+<rect x="537.0" y="177.5" width="77.7" height="20.0" rx="2" fill="var(--c-slate)" opacity="0.45"/>
+<rect x="614.7" y="177.5" width="85.5" height="20.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="284.0" y="191.5" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">매출 성장률 ±2.0%p</text>
+<text x="529.0" y="191.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">361</text>
+<text x="708.2" y="191.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">403</text>
+<rect x="572.0" y="222.5" width="42.7" height="20.0" rx="2" fill="var(--c-slate)" opacity="0.45"/>
+<rect x="614.7" y="222.5" width="46.6" height="20.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="284.0" y="236.5" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">운전자본 ±10일</text>
+<text x="564.0" y="236.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">370</text>
+<text x="669.4" y="236.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">393</text>
+<rect x="587.5" y="267.5" width="27.2" height="20.0" rx="2" fill="var(--c-slate)" opacity="0.45"/>
+<rect x="614.7" y="267.5" width="27.2" height="20.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="284.0" y="281.5" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">설비투자 ±20%</text>
+<text x="579.5" y="281.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11.5px;">374</text>
+<text x="649.9" y="281.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">388</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 협상에서 어느 가정부터 다퉈야 하는가. 위 두 줄이면 끝납니다.</div><div class="w"><b>함정.</b> 일변량입니다. 두 가정이 같이 움직이는 경우는 시나리오로 따로 봅니다. 흔든 폭을 라벨에 적지 않으면 비교가 성립하지 않습니다.</div></div></figure>
+<figure class="ex" id="e06"><div class="ex-head"><span class="ex-no">EXHIBIT 06</span><h3>현금 인수라면 420억까지 이익이 늘어납니다</h3><span class="tag">Accretion / Dilution Grid</span></div><div class="ex-chart"><svg viewBox="0 0 1080 350" role="img" aria-label="인수가와 대금 구성에 따른 주당이익 증감 격자">
+<text x="30.0" y="34.0" class="ls" text-anchor="start">값은 인수 첫해 주당이익 증감률(%) · 초록 = 증가, 적갈 = 감소 · 예시</text>
+<text x="305.0" y="52.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:650;">현금 100%</text>
+<text x="495.0" y="52.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:650;">현금 75%</text>
+<text x="685.0" y="52.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:650;">현금 50%</text>
+<text x="875.0" y="52.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:650;">현금 25%</text>
+<text x="194.0" y="96.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">인수가 360억</text>
+<rect x="212.0" y="66.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.6446153846153847"/>
+<text x="305.0" y="96.0" class="f" text-anchor="middle" style="fill:#fff;font-size:13px;font-weight:700;">+6.2%</text>
+<rect x="402.0" y="66.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.5261538461538462"/>
+<text x="495.0" y="96.0" class="f" text-anchor="middle" style="fill:#fff;font-size:13px;font-weight:700;">+4.8%</text>
+<rect x="592.0" y="66.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.38230769230769235"/>
+<text x="685.0" y="96.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+3.1%</text>
+<rect x="782.0" y="66.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.22153846153846152"/>
+<text x="875.0" y="96.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+1.2%</text>
+<text x="194.0" y="150.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">인수가 390억</text>
+<rect x="212.0" y="120.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.46692307692307694"/>
+<text x="305.0" y="150.0" class="f" text-anchor="middle" style="fill:#fff;font-size:13px;font-weight:700;">+4.1%</text>
+<rect x="402.0" y="120.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.3653846153846154"/>
+<text x="495.0" y="150.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+2.9%</text>
+<rect x="592.0" y="120.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.23846153846153845"/>
+<text x="685.0" y="150.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+1.4%</text>
+<rect x="782.0" y="120.0" width="186.0" height="50.0" rx="3" fill="var(--c-clay)" opacity="0.1453846153846154"/>
+<text x="875.0" y="150.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">-0.3%</text>
+<text x="194.0" y="204.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">인수가 420억</text>
+<rect x="212.0" y="174.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.30615384615384617"/>
+<text x="305.0" y="204.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+2.2%</text>
+<rect x="402.0" y="174.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.21307692307692308"/>
+<text x="495.0" y="204.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+1.1%</text>
+<rect x="592.0" y="174.0" width="186.0" height="50.0" rx="3" fill="var(--c-clay)" opacity="0.15384615384615385"/>
+<text x="685.0" y="204.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">-0.4%</text>
+<rect x="782.0" y="174.0" width="186.0" height="50.0" rx="3" fill="var(--c-clay)" opacity="0.28076923076923077"/>
+<text x="875.0" y="204.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">-1.9%</text>
+<text x="194.0" y="258.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:650;">인수가 450억</text>
+<rect x="212.0" y="228.0" width="186.0" height="50.0" rx="3" fill="var(--c-teal)" opacity="0.15384615384615385"/>
+<text x="305.0" y="258.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">+0.4%</text>
+<rect x="402.0" y="228.0" width="186.0" height="50.0" rx="3" fill="var(--c-clay)" opacity="0.1876923076923077"/>
+<text x="495.0" y="258.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">-0.8%</text>
+<rect x="592.0" y="228.0" width="186.0" height="50.0" rx="3" fill="var(--c-clay)" opacity="0.2976923076923077"/>
+<text x="685.0" y="258.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">-2.1%</text>
+<rect x="782.0" y="228.0" width="186.0" height="50.0" rx="3" fill="var(--c-clay)" opacity="0.4246153846153847"/>
+<text x="875.0" y="258.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">-3.6%</text>
+<rect x="212.0" y="174.0" width="566.0" height="50.0" rx="3" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<text x="495.0" y="306.0" class="l" text-anchor="middle" style="fill:var(--ink-2);font-size:12.5px;">제시가 420억 · 현금 50% 이하로 내려가면 희석으로 넘어갑니다</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 인수가와 대금 구성 중 어느 조합까지 주당이익이 버티는가.</div><div class="w"><b>함정.</b> 첫해 회계 효과일 뿐 가치 판단이 아닙니다. 증가한다고 싼 것도, 희석된다고 비싼 것도 아닙니다.</div></div></figure>
+</section>
+<section class="sect" id="p2"><div class="sect-head"><div class="num">PART II</div><div><h2>딜 구조 · 돈이 어디서 와서 누구에게 가는가</h2><p>대주단과 투자자가 실제로 밤에 보는 것들입니다. 조달의 균형, 수익의 원천, 회수 시나리오별 배분, 그리고 만기.</p></div></div>
+<figure class="ex" id="e07"><div class="ex-head"><span class="ex-no">EXHIBIT 07</span><h3>양쪽 합계 420억이 맞지 않으면 표가 아니라 계산이 틀린 것입니다</h3><span class="tag">Sources & Uses</span></div><div class="ex-chart"><div class="tblw"><table>
+<thead><tr><th style="width:26%">조달</th><th class="num" style="width:16%">금액 (억원)</th>
+<th style="width:8%"></th><th style="width:26%">사용</th><th class="num" style="width:16%">금액 (억원)</th></tr></thead>
+<tbody>
+<tr><td><b>인수금융</b> · EBITDA의 4.4배</td><td class="num">210</td><td></td>
+    <td><b>지분 인수대금</b></td><td class="num">380</td></tr>
+<tr><td><b>우선주</b></td><td class="num">90</td><td></td>
+    <td><b>거래 비용</b></td><td class="num">18</td></tr>
+<tr><td><b>보통주</b></td><td class="num">120</td><td></td>
+    <td><b>운전자금</b></td><td class="num">22</td></tr>
+<tr class="tot"><td>합계</td><td class="num">420</td><td></td><td>합계</td><td class="num">420</td></tr>
+</tbody></table></div></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 인수 자금이 어디서 와서 어디로 가는가.</div><div class="w"><b>함정.</b> 합계 행이 없는 조달·사용 표는 검증 불가능합니다. 인수금융 배수를 조달 칸에 함께 적습니다.</div></div></figure>
+<figure class="ex" id="e08"><div class="ex-head"><span class="ex-no">EXHIBIT 08</span><h3>수익의 47%가 EBITDA 성장에서 나왔습니다</h3><span class="tag">Value Creation Attribution</span></div><div class="ex-chart"><svg viewBox="0 0 1080 260" role="img" aria-label="지분가치 증가분 240억의 원천 분해">
+<text x="40.0" y="34.0" class="t" text-anchor="start">투자원금 2.4배 · IRR 19.2% · 지분가치 증가 240억</text>
+<rect x="40.0" y="62.0" width="463.7" height="84.0" rx="3" fill="var(--c-navy)" opacity="0.95"/>
+<text x="273.3" y="111.0" class="fw" text-anchor="middle" style="font-size:19px;font-weight:800;">47%</text>
+<text x="273.3" y="170.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">EBITDA 성장</text>
+<text x="273.3" y="190.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;">112억</text>
+<rect x="506.7" y="62.0" width="322.0" height="84.0" rx="3" fill="var(--c-navy)" opacity="0.7"/>
+<text x="669.2" y="111.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:19px;font-weight:800;">32%</text>
+<text x="669.2" y="170.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">차입금 상환</text>
+<text x="669.2" y="190.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;">78억</text>
+<rect x="831.7" y="62.0" width="138.7" height="84.0" rx="3" fill="var(--c-slate)" opacity="0.8"/>
+<text x="902.5" y="111.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:19px;font-weight:800;">14%</text>
+<text x="902.5" y="170.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">배수 확대</text>
+<text x="902.5" y="190.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;">34억</text>
+<rect x="973.3" y="62.0" width="63.7" height="84.0" rx="3" fill="var(--c-sand)" opacity="0.95"/>
+<text x="1006.7" y="111.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:19px;font-weight:800;">7%</text>
+<text x="1006.7" y="170.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700;">잉여현금</text>
+<text x="1006.7" y="190.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;">16억</text>
+<text x="40.0" y="220.0" class="ls" text-anchor="start">배수 확대가 14%뿐이라 시장에 기댄 거래가 아닙니다. 합이 240억과 정확히 맞아야 합니다.</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 돈을 번 원천이 실력(이익 성장)인가 시장(배수)인가 레버리지인가.</div><div class="w"><b>함정.</b> 네 조각의 합이 지분가치 증가분과 정확히 맞아야 합니다. 잔차를 만들지 말고 다시 쪼갭니다.</div></div></figure>
+<figure class="ex" id="e09"><div class="ex-head"><span class="ex-no">EXHIBIT 09</span><h3>회수 300억 아래서는 보통주 몫이 없습니다</h3><span class="tag">Cap Table Payoff Diagram</span></div><div class="ex-chart"><svg viewBox="0 0 1080 380" role="img" aria-label="회수금액별 주주 배분 페이오프">
+<line x1="74.0" y1="240.4" x2="840.0" y2="240.4" stroke="var(--grid)" stroke-width="1"/>
+<text x="66.0" y="244.4" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">100</text>
+<line x1="74.0" y1="144.8" x2="840.0" y2="144.8" stroke="var(--grid)" stroke-width="1"/>
+<text x="66.0" y="148.8" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">200</text>
+<line x1="74.0" y1="49.1" x2="840.0" y2="49.1" stroke="var(--grid)" stroke-width="1"/>
+<text x="66.0" y="53.1" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">300</text>
+<line x1="74.0" y1="336.0" x2="840.0" y2="336.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="342.1" y1="30.0" x2="342.1" y2="336.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="342.1" y="354.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">210</text>
+<line x1="457.0" y1="30.0" x2="457.0" y2="336.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="457.0" y="354.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">300</text>
+<line x1="610.2" y1="30.0" x2="610.2" y2="336.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="610.2" y="354.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">420</text>
+<polyline points="74.0,336.0 342.1,135.2 840.0,135.2" fill="none" stroke="var(--c-slate)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="852.0" y="139.2" class="l" text-anchor="start" style="fill:var(--c-slate);font-size:13px;font-weight:800;">인수금융 210억</text>
+<text x="852.0" y="155.2" class="ls" text-anchor="start">먼저, 전액</text>
+<polyline points="74.0,336.0 342.1,336.0 457.0,249.9 840.0,249.9" fill="none" stroke="var(--c-ochre)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="852.0" y="253.9" class="l" text-anchor="start" style="fill:var(--c-ochre);font-size:13px;font-weight:800;">우선주 90억</text>
+<text x="852.0" y="269.9" class="ls" text-anchor="start">1배 우선</text>
+<polyline points="74.0,336.0 457.0,336.0 840.0,49.1" fill="none" stroke="var(--c-navy)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="852.0" y="53.1" class="l" text-anchor="start" style="fill:var(--c-navy);font-size:13px;font-weight:800;">보통주</text>
+<text x="852.0" y="69.1" class="ls" text-anchor="start">300억을 넘어야 시작</text>
+<text x="840.0" y="372.0" class="lb" text-anchor="end" style="fill:var(--ink);font-weight:700;">회수금액 (억원) →</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 회수금액별로 각 증권이 얼마를 받는가. 우선순위의 실감.</div><div class="w"><b>함정.</b> 참가부·전환권이 붙으면 꺾임 위치가 달라집니다. 권리 조건을 그림 밖 각주가 아니라 선 옆에 적습니다.</div></div></figure>
+<figure class="ex" id="e10"><div class="ex-head"><span class="ex-no">EXHIBIT 10</span><h3>2028년에 58억이 한꺼번에 돌아옵니다</h3><span class="tag">Maturity Ladder</span></div><div class="ex-chart"><svg viewBox="0 0 1080 360" role="img" aria-label="만기 분포와 유동성 한도">
+<rect x="70.0" y="22.0" width="12.0" height="12.0" rx="2" fill="var(--c-navy)"/>
+<text x="90.0" y="32.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">시설자금</text>
+<rect x="190.0" y="22.0" width="12.0" height="12.0" rx="2" fill="var(--c-teal)"/>
+<text x="210.0" y="32.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">운전자금</text>
+<rect x="310.0" y="22.0" width="12.0" height="12.0" rx="2" fill="var(--c-ochre)"/>
+<text x="330.0" y="32.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">회사채</text>
+<rect x="123.0" y="245.1" width="88.0" height="70.9" rx="2" fill="var(--c-navy)" opacity="0.88"/>
+<rect x="123.0" y="150.5" width="88.0" height="94.5" rx="2" fill="var(--c-teal)" opacity="0.88"/>
+<text x="167.0" y="141.5" class="f" text-anchor="middle" style="font-size:13.5px;font-weight:800;">42억</text>
+<text x="167.0" y="336.0" class="l" text-anchor="middle" style="fill:var(--ink);font-weight:650;">2026</text>
+<rect x="317.0" y="245.1" width="88.0" height="70.9" rx="2" fill="var(--c-navy)" opacity="0.88"/>
+<rect x="317.0" y="197.8" width="88.0" height="47.3" rx="2" fill="var(--c-teal)" opacity="0.88"/>
+<text x="361.0" y="188.8" class="f" text-anchor="middle" style="font-size:13.5px;font-weight:800;">30억</text>
+<text x="361.0" y="336.0" class="l" text-anchor="middle" style="fill:var(--ink);font-weight:650;">2027</text>
+<rect x="511.0" y="245.1" width="88.0" height="70.9" rx="2" fill="var(--c-navy)" opacity="0.88"/>
+<rect x="511.0" y="87.5" width="88.0" height="157.6" rx="2" fill="var(--c-ochre)" opacity="0.88"/>
+<text x="555.0" y="78.5" class="f" text-anchor="middle" style="font-size:13.5px;font-weight:800;">58억</text>
+<text x="555.0" y="336.0" class="l" text-anchor="middle" style="fill:var(--ink);font-weight:650;">2028</text>
+<rect x="705.0" y="268.7" width="88.0" height="47.3" rx="2" fill="var(--c-navy)" opacity="0.88"/>
+<text x="749.0" y="259.7" class="f" text-anchor="middle" style="font-size:13.5px;font-weight:800;">12억</text>
+<text x="749.0" y="336.0" class="l" text-anchor="middle" style="fill:var(--ink);font-weight:650;">2029</text>
+<rect x="899.0" y="292.4" width="88.0" height="23.6" rx="2" fill="var(--c-navy)" opacity="0.88"/>
+<text x="943.0" y="283.4" class="f" text-anchor="middle" style="font-size:13.5px;font-weight:800;">6억</text>
+<text x="943.0" y="336.0" class="l" text-anchor="middle" style="fill:var(--ink);font-weight:650;">2030</text>
+<line x1="70.0" y1="134.8" x2="1040.0" y2="134.8" stroke="var(--c-clay)" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="1040.0" y="125.8" class="f" text-anchor="end" style="fill:var(--c-clay);font-size:12.5px;font-weight:800;">가용 유동성 46억</text>
+<line x1="70.0" y1="316.0" x2="1040.0" y2="316.0" stroke="var(--rule)" stroke-width="1"/>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 총 차입금이 아니라, 언제 얼마가 몰려 돌아오는가.</div><div class="w"><b>함정.</b> 리볼빙·한도대는 만기와 성격이 다릅니다. 섞지 말고 주석으로 밝힙니다. 유동성 선이 없으면 이 그림은 반쪽입니다.</div></div></figure>
+</section>
+<section class="sect" id="p3"><div class="sect-head"><div class="num">PART III</div><div><h2>실적·현금 분해 · 어디서 벌고 어디서 새는가</h2><p>요약하지 않고 분해합니다. 매출의 원천, 손익에서 현금까지의 흐름, 묶인 운전자본, 수익성의 구조.</p></div></div>
+<figure class="ex" id="e11"><div class="ex-head"><span class="ex-no">EXHIBIT 11</span><h3>33억 증가분 중 27억이 단가와 믹스입니다</h3><span class="tag">Price-Volume-Mix Bridge</span></div><div class="ex-chart"><svg viewBox="0 0 1080 340" role="img" aria-label="물량 가격 믹스 매출 브릿지, 축 절단">
+<rect x="90.0" y="193.9" width="100.0" height="76.1" rx="2" fill="var(--c-navy)"/>
+<text x="140.0" y="183.9" class="f" text-anchor="middle" style="font-size:15px;font-weight:800;">287</text>
+<line x1="84.0" y1="260.0" x2="96.0" y2="254.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="184.0" y1="260.0" x2="196.0" y2="254.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="84.0" y1="255.0" x2="96.0" y2="249.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="184.0" y1="255.0" x2="196.0" y2="249.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="190.0" y1="193.9" x2="260.0" y2="193.9" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="140.0" y="290.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">2024 매출</text>
+<rect x="260.0" y="151.1" width="80.0" height="42.8" rx="2" fill="var(--c-teal)" opacity="0.88"/>
+<text x="300.0" y="143.1" class="f" text-anchor="middle" style="fill:var(--c-teal);font-size:13px;font-weight:700;">+18</text>
+<line x1="340.0" y1="151.1" x2="420.0" y2="151.1" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="300.0" y="290.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">물량</text>
+<rect x="420.0" y="101.2" width="80.0" height="49.9" rx="2" fill="var(--c-teal)" opacity="0.88"/>
+<text x="460.0" y="93.2" class="f" text-anchor="middle" style="fill:var(--c-teal);font-size:13px;font-weight:700;">+21</text>
+<line x1="500.0" y1="101.2" x2="580.0" y2="101.2" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="460.0" y="290.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">단가</text>
+<rect x="580.0" y="86.9" width="80.0" height="14.3" rx="2" fill="var(--c-teal)" opacity="0.88"/>
+<text x="620.0" y="78.9" class="f" text-anchor="middle" style="fill:var(--c-teal);font-size:13px;font-weight:700;">+6</text>
+<line x1="660.0" y1="86.9" x2="740.0" y2="86.9" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="620.0" y="290.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">믹스</text>
+<rect x="740.0" y="86.9" width="80.0" height="28.5" rx="2" fill="var(--c-clay)" opacity="0.88"/>
+<text x="780.0" y="78.9" class="f" text-anchor="middle" style="fill:var(--c-clay);font-size:13px;font-weight:700;">-12</text>
+<line x1="820.0" y1="115.4" x2="890.0" y2="115.4" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="780.0" y="290.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">이탈</text>
+<rect x="890.0" y="115.4" width="100.0" height="154.6" rx="2" fill="var(--ink)"/>
+<text x="940.0" y="105.4" class="f" text-anchor="middle" style="font-size:15px;font-weight:800;">320</text>
+<line x1="884.0" y1="260.0" x2="896.0" y2="254.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="984.0" y1="260.0" x2="996.0" y2="254.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="884.0" y1="255.0" x2="896.0" y2="249.0" stroke="var(--plot)" stroke-width="2.6"/>
+<line x1="984.0" y1="255.0" x2="996.0" y2="249.0" stroke="var(--plot)" stroke-width="2.6"/>
+<text x="940.0" y="290.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:600;">2025 매출</text>
+<line x1="60.0" y1="270.0" x2="1020.0" y2="270.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="60.0" y="36.0" class="ls" text-anchor="start">축은 255에서 절단 · 요인 합이 33억과 맞지 않으면 기타로 메우지 말고 다시 쪼갭니다</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 매출이 얼마 늘었나가 아니라 무엇이 늘렸나.</div><div class="w"><b>함정.</b> 요인 합이 증가분과 안 맞으면 기타로 메우지 않습니다. 못 나눈 것은 못 나눴다고 적습니다.</div></div></figure>
+<figure class="ex" id="e12"><div class="ex-head"><span class="ex-no">EXHIBIT 12</span><h3>320억이 들어와서 14억이 남습니다</h3><span class="tag">P&L-to-Cash Sankey</span></div><div class="ex-chart"><svg viewBox="0 0 1080 540" role="img" aria-label="매출에서 잉여현금까지의 자금 흐름 생키">
+<defs><linearGradient id="rcat" x1="0" x2="1"><stop offset="0" stop-color="#1B3A57" stop-opacity="0.5"/><stop offset="1" stop-color="#7A8C9B" stop-opacity="0.42"/></linearGradient></defs>
+<defs><linearGradient id="rsat" x1="0" x2="1"><stop offset="0" stop-color="#1B3A57" stop-opacity="0.5"/><stop offset="1" stop-color="#B3762B" stop-opacity="0.42"/></linearGradient></defs>
+<defs><linearGradient id="roat" x1="0" x2="1"><stop offset="0" stop-color="#1B3A57" stop-opacity="0.5"/><stop offset="1" stop-color="#2E6F6B" stop-opacity="0.55"/></linearGradient></defs>
+<defs><linearGradient id="oeat" x1="0" x2="1"><stop offset="0" stop-color="#2E6F6B" stop-opacity="0.55"/><stop offset="1" stop-color="#2E6F6B" stop-opacity="0.6"/></linearGradient></defs>
+<defs><linearGradient id="deat" x1="0" x2="1"><stop offset="0" stop-color="#C9B893" stop-opacity="0.7"/><stop offset="1" stop-color="#2E6F6B" stop-opacity="0.45"/></linearGradient></defs>
+<defs><linearGradient id="ewat" x1="0" x2="1"><stop offset="0" stop-color="#2E6F6B" stop-opacity="0.5"/><stop offset="1" stop-color="#8C3B36" stop-opacity="0.5"/></linearGradient></defs>
+<defs><linearGradient id="exat" x1="0" x2="1"><stop offset="0" stop-color="#2E6F6B" stop-opacity="0.5"/><stop offset="1" stop-color="#7A8C9B" stop-opacity="0.45"/></linearGradient></defs>
+<defs><linearGradient id="efat" x1="0" x2="1"><stop offset="0" stop-color="#2E6F6B" stop-opacity="0.6"/><stop offset="1" stop-color="#2E6F6B" stop-opacity="0.85"/></linearGradient></defs>
+<rect x="70.0" y="96.0" width="15.0" height="336.0" rx="2" fill="var(--c-navy)"/>
+<text x="58.0" y="256.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:15px;font-weight:800;">매출</text>
+<text x="58.0" y="276.0" class="f" text-anchor="end" style="font-size:14px;font-weight:700;">320억</text>
+<path d="M85.0,96.0 C252.5,96.0 252.5,74.0 420.0,74.0 L420.0,316.6 C252.5,316.6 252.5,338.6 85.0,338.6 Z" fill="url(#rcat)"/>
+<path d="M85.0,338.6 C252.5,338.6 252.5,346.6 420.0,346.6 L420.0,409.6 C252.5,409.6 252.5,401.6 85.0,401.6 Z" fill="url(#rsat)"/>
+<path d="M85.0,401.6 C252.5,401.6 252.5,439.6 420.0,439.6 L420.0,470.0 C252.5,470.0 252.5,432.0 85.0,432.0 Z" fill="url(#roat)"/>
+<rect x="420.0" y="74.0" width="15.0" height="242.6" rx="2" fill="var(--c-slate)"/>
+<text x="446.0" y="189.3" class="l" text-anchor="start" style="fill:var(--ink);font-size:14px;font-weight:800;">매출원가  231</text>
+<text x="446.0" y="208.3" class="ls" text-anchor="start">매출의 72%</text>
+<rect x="420.0" y="346.6" width="15.0" height="63.0" rx="2" fill="var(--c-ochre)"/>
+<text x="446.0" y="379.1" class="l" text-anchor="start" style="fill:var(--ink);font-size:14px;font-weight:800;">판매관리비  60</text>
+<text x="446.0" y="398.1" class="ls" text-anchor="start">매출의 19%</text>
+<path d="M435.0,439.6 C547.5,439.6 547.5,439.6 660.0,439.6 L660.0,470.0 C547.5,470.0 547.5,470.0 435.0,470.0 Z" fill="url(#oeat)"/>
+<text x="550.0" y="488.0" class="l" text-anchor="middle" style="fill:var(--c-teal);font-size:13.5px;font-weight:800;">영업이익  29</text>
+<rect x="552.0" y="333.6" width="15.0" height="19.9" rx="2" fill="var(--c-sand)"/>
+<text x="576.0" y="327.6" class="l" text-anchor="start" style="fill:var(--ink);font-size:12.5px;font-weight:700;">감가상각  19</text>
+<text x="576.0" y="344.6" class="ls" text-anchor="start">비현금 가산</text>
+<path d="M567.0,333.6 C613.5,333.6 613.5,419.6 660.0,419.6 L660.0,439.6 C613.5,439.6 613.5,353.6 567.0,353.6 Z" fill="url(#deat)"/>
+<rect x="660.0" y="419.6" width="15.0" height="50.4" rx="2" fill="var(--c-teal)"/>
+<text x="668.0" y="490.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:13.5px;font-weight:800;">EBITDA 48억</text>
+<path d="M675.0,419.6 C795.5,419.6 795.5,372.6 916.0,372.6 L916.0,387.3 C795.5,387.3 795.5,434.3 675.0,434.3 Z" fill="url(#ewat)"/>
+<rect x="916.0" y="372.6" width="12.0" height="14.7" rx="2" fill="var(--c-clay)"/>
+<text x="940.0" y="384.5" class="l" text-anchor="start" style="fill:var(--ink);font-size:12.5px;font-weight:650;">운전자본 증가</text>
+<text x="1037.6" y="384.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:700;">14억</text>
+<path d="M675.0,434.3 C795.5,434.3 795.5,403.3 916.0,403.3 L916.0,414.9 C795.5,414.9 795.5,445.9 675.0,445.9 Z" fill="url(#exat)"/>
+<rect x="916.0" y="403.3" width="12.0" height="11.6" rx="2" fill="var(--c-slate)"/>
+<text x="940.0" y="413.6" class="l" text-anchor="start" style="fill:var(--ink);font-size:12.5px;font-weight:650;">설비투자</text>
+<text x="999.2" y="413.6" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:700;">11억</text>
+<path d="M675.0,445.9 C795.5,445.9 795.5,430.9 916.0,430.9 L916.0,435.1 C795.5,435.1 795.5,450.1 675.0,450.1 Z" fill="url(#exat)"/>
+<rect x="916.0" y="430.9" width="12.0" height="4.2" rx="2" fill="var(--c-slate)"/>
+<text x="940.0" y="437.5" class="l" text-anchor="start" style="fill:var(--ink);font-size:12.5px;font-weight:650;">이자</text>
+<text x="973.6" y="437.5" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:700;">4억</text>
+<path d="M675.0,450.1 C795.5,450.1 795.5,451.1 916.0,451.1 L916.0,456.3 C795.5,456.3 795.5,455.3 675.0,455.3 Z" fill="url(#exat)"/>
+<rect x="916.0" y="451.1" width="12.0" height="5.2" rx="2" fill="var(--c-slate)"/>
+<text x="940.0" y="458.2" class="l" text-anchor="start" style="fill:var(--ink);font-size:12.5px;font-weight:650;">법인세</text>
+<text x="986.4" y="458.2" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:700;">5억</text>
+<path d="M675.0,455.3 C795.5,455.3 795.5,472.3 916.0,472.3 L916.0,487.0 C795.5,487.0 795.5,470.0 675.0,470.0 Z" fill="url(#efat)"/>
+<rect x="916.0" y="472.3" width="12.0" height="14.7" rx="2" fill="var(--c-teal)"/>
+<text x="940.0" y="479.7" class="l" text-anchor="start" style="fill:var(--ink);font-size:14.5px;font-weight:800;">잉여현금</text>
+<text x="1010.0" y="479.7" class="f" text-anchor="start" style="fill:var(--c-teal);font-size:17px;font-weight:800;">14억</text>
+<text x="940.0" y="500.7" class="ls" text-anchor="start">전환율 29%</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 1,000원이 들어와 최종적으로 얼마가 남고 나머지는 어디로 갔는가. 손익에서 끊지 않고 현금까지 잇습니다.</div><div class="w"><b>함정.</b> 화려해서 남용되기 쉽습니다. 흐름이 실제로 분기·합류하는 구조가 아니면 그냥 폭포가 낫습니다.</div></div></figure>
+<figure class="ex" id="e13"><div class="ex-head"><span class="ex-no">EXHIBIT 13</span><h3>매입에서 수금까지 109일, 그중 57일이 회사 돈입니다</h3><span class="tag">Cash Conversion Cycle 3면</span></div><div class="ex-chart"><svg viewBox="0 0 1080 580" role="img" aria-label="현금전환주기 3면: 자금이 묶이는 시간축, 6분기 추이, 동종 분포">
+<text x="30.0" y="30.0" class="t" text-anchor="start">A. 자금이 묶이는 구간, 일</text>
+<line x1="200.0" y1="48.0" x2="200.0" y2="218.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="200.0" y="44.0" class="ls" text-anchor="middle">0일</text>
+<line x1="393.0" y1="48.0" x2="393.0" y2="218.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="393.0" y="44.0" class="ls" text-anchor="middle">30일</text>
+<line x1="586.1" y1="48.0" x2="586.1" y2="218.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="586.1" y="44.0" class="ls" text-anchor="middle">60일</text>
+<line x1="779.1" y1="48.0" x2="779.1" y2="218.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="779.1" y="44.0" class="ls" text-anchor="middle">90일</text>
+<rect x="200.0" y="62.0" width="437.6" height="26.0" rx="2" fill="var(--c-navy)" opacity="0.9"/>
+<text x="418.8" y="79.0" class="fw" text-anchor="middle">68일</text>
+<text x="186.0" y="79.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:600;">재고 (DIO)</text>
+<text x="954.0" y="79.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-weight:600;">43억 묶임</text>
+<rect x="637.6" y="102.0" width="263.8" height="26.0" rx="2" fill="var(--c-teal)" opacity="0.9"/>
+<text x="769.5" y="119.0" class="fw" text-anchor="middle">41일</text>
+<text x="186.0" y="119.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:600;">매출채권 (DSO)</text>
+<text x="954.0" y="119.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-weight:600;">36억 묶임</text>
+<rect x="200.0" y="142.0" width="334.6" height="26.0" rx="2" fill="var(--plot)" stroke="var(--c-ochre)" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="367.3" y="159.0" class="f" text-anchor="middle" style="fill:var(--c-ochre);font-weight:700;">52일</text>
+<text x="186.0" y="159.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:600;">매입채무 (DPO)</text>
+<text x="954.0" y="159.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-weight:600;">33억 조달</text>
+<rect x="534.6" y="182.0" width="366.8" height="26.0" rx="2" fill="var(--ink)" opacity="0.9"/>
+<text x="718.0" y="199.0" class="fw" text-anchor="middle">57일</text>
+<text x="186.0" y="199.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:600;">현금 회전일</text>
+<text x="954.0" y="199.0" class="f" text-anchor="start" style="fill:var(--ink-2);font-weight:600;">순 46억</text>
+<circle cx="718.0" cy="170.0" r="9.5" fill="var(--paper)" stroke="var(--ink-2)" stroke-width="1.2"/>
+<text x="718.0" y="174.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:11px;font-weight:700;">1</text>
+<text x="30.0" y="268.0" class="t" text-anchor="start">B. 6분기 추이, 일</text>
+<line x1="200.0" y1="400.2" x2="620.0" y2="400.2" stroke="var(--grid)" stroke-width="1"/>
+<text x="192.0" y="404.2" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">40</text>
+<line x1="200.0" y1="350.7" x2="620.0" y2="350.7" stroke="var(--grid)" stroke-width="1"/>
+<text x="192.0" y="354.7" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">55</text>
+<line x1="200.0" y1="301.2" x2="620.0" y2="301.2" stroke="var(--grid)" stroke-width="1"/>
+<text x="192.0" y="305.2" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">70</text>
+<polyline points="200.0,350.7 284.0,340.8 368.0,327.6 452.0,314.4 536.0,301.2 620.0,307.8" fill="none" stroke="var(--c-navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="620.0" cy="307.8" r="4.0" fill="var(--c-navy)"/>
+<text x="630.0" y="311.8" class="l" text-anchor="start" style="fill:var(--c-navy);font-size:12px;font-weight:700;">재고 68일</text>
+<polyline points="200.0,387.0 284.0,380.4 368.0,370.5 452.0,367.2 536.0,363.9 620.0,360.6" fill="none" stroke="var(--c-ochre)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="620.0" cy="360.6" r="4.0" fill="var(--c-ochre)"/>
+<text x="630.0" y="364.6" class="l" text-anchor="start" style="fill:var(--c-ochre);font-size:12px;font-weight:700;">매입채무 52일</text>
+<polyline points="200.0,406.8 284.0,400.2 368.0,387.0 452.0,380.4 536.0,390.3 620.0,396.9" fill="none" stroke="var(--c-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="620.0" cy="396.9" r="4.0" fill="var(--c-teal)"/>
+<text x="630.0" y="400.9" class="l" text-anchor="start" style="fill:var(--c-teal);font-size:12px;font-weight:700;">매출채권 41일</text>
+<text x="200.0" y="438.0" class="ls" text-anchor="middle">24.1Q</text>
+<text x="620.0" y="438.0" class="ls" text-anchor="middle">25.2Q</text>
+<circle cx="536.0" cy="285.2" r="9.5" fill="var(--paper)" stroke="var(--ink-2)" stroke-width="1.2"/>
+<text x="536.0" y="289.2" class="f" text-anchor="middle" style="fill:var(--ink);font-size:11px;font-weight:700;">2</text>
+<text x="700.0" y="268.0" class="t" text-anchor="start">C. 동종 12사 분포, 일</text>
+<rect x="805.0" y="328.0" width="91.2" height="44.0" rx="0" fill="var(--c-slate)" opacity="0.18"/>
+<line x1="850.6" y1="324.0" x2="850.6" y2="376.0" stroke="var(--c-navy)" stroke-width="2"/>
+<line x1="726.0" y1="350.0" x2="1030.0" y2="350.0" stroke="var(--rule)" stroke-width="1"/>
+<circle cx="744.2" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="774.6" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="792.9" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="805.0" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="823.3" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="841.5" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="859.8" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="878.0" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="896.2" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="908.4" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="957.0" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<circle cx="1005.7" cy="350.0" r="4.5" fill="var(--c-slate)"/>
+<path d="M920.6,339.0 L929.6,350.0 L920.6,361.0 L911.6,350.0 Z" fill="var(--c-ochre)"/>
+<text x="920.6" y="330.0" class="f" text-anchor="middle" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">자사 57일</text>
+<text x="850.6" y="392.0" class="ls" text-anchor="middle">중앙값 46일</text>
+<text x="726.0" y="392.0" class="f" text-anchor="start" style="fill:var(--ink-3);font-size:11px;">28</text>
+<text x="1030.0" y="392.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">71</text>
+<circle cx="920.6" cy="412.0" r="9.5" fill="var(--paper)" stroke="var(--ink-2)" stroke-width="1.2"/>
+<text x="920.6" y="416.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:11px;font-weight:700;">3</text>
+<text x="700.0" y="452.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;">동종보다 11.5일 깁니다. 그 차이가 곧</text>
+<text x="700.0" y="470.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;">묶인 현금 약 8억원입니다.</text>
+<line x1="30.0" y1="510.0" x2="1050.0" y2="510.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="30.0" y="540.0" class="ls" text-anchor="start">운전자본 순투자</text>
+<text x="30.0" y="560.0" class="f" text-anchor="start" style="fill:var(--ink);font-size:17px;font-weight:800;">46억</text>
+<text x="300.0" y="540.0" class="ls" text-anchor="start">원인 지목</text>
+<text x="300.0" y="560.0" class="f" text-anchor="start" style="fill:var(--c-navy);font-size:17px;font-weight:800;">재고 55 → 68일</text>
+<text x="620.0" y="540.0" class="ls" text-anchor="start">동종 대비</text>
+<text x="620.0" y="560.0" class="f" text-anchor="start" style="fill:var(--c-clay);font-size:17px;font-weight:800;">+11.5일 (10위/12사)</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 며칠이 걸리고, 몇 년째 그런지, 그게 돈으로 얼마인지를 한 장에서.</div><div class="w"><b>함정.</b> DSO는 매출, DIO·DPO는 매출원가로 나눕니다. 평잔인지 기말인지 밝히지 않으면 계절성이 통째로 들어옵니다.</div></div></figure>
+<figure class="ex" id="e14"><div class="ex-head"><span class="ex-no">EXHIBIT 14</span><h3>이 ROE는 마진이 아니라 회전율이 만들었습니다</h3><span class="tag">DuPont Decomposition</span></div><div class="ex-chart"><svg viewBox="0 0 1080 300" role="img" aria-label="ROE 두 단 분해 트리">
+<rect x="440.0" y="16.0" width="200.0" height="64.0" rx="6" fill="var(--ink)"/>
+<text x="540.0" y="38.0" class="l" text-anchor="middle" style="fill:var(--paper);font-size:12px;font-weight:800;">ROE</text>
+<text x="540.0" y="66.0" class="f" text-anchor="middle" style="fill:#fff;font-size:20px;font-weight:800;">14.2%</text>
+<line x1="190.0" y1="116.0" x2="190.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="190.0" y1="100.0" x2="540.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<rect x="90.0" y="116.0" width="200.0" height="58.0" rx="6" fill="var(--plot)" stroke="var(--rule)" stroke-width="1"/>
+<text x="190.0" y="138.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:800;">순이익률</text>
+<text x="190.0" y="160.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:20px;font-weight:800;">6.5%</text>
+<rect x="90.0" y="116.0" width="200.0" height="3.0" rx="0" fill="var(--c-navy)"/>
+<line x1="540.0" y1="116.0" x2="540.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="540.0" y1="100.0" x2="540.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<rect x="440.0" y="116.0" width="200.0" height="58.0" rx="6" fill="var(--plot)" stroke="var(--rule)" stroke-width="1"/>
+<text x="540.0" y="138.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:800;">자산회전율</text>
+<text x="540.0" y="160.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:20px;font-weight:800;">1.32</text>
+<rect x="440.0" y="116.0" width="200.0" height="3.0" rx="0" fill="var(--c-teal)"/>
+<text x="404.0" y="152.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:24px;font-weight:800;">×</text>
+<line x1="890.0" y1="116.0" x2="890.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="890.0" y1="100.0" x2="540.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<rect x="790.0" y="116.0" width="200.0" height="58.0" rx="6" fill="var(--plot)" stroke="var(--rule)" stroke-width="1"/>
+<text x="890.0" y="138.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:12px;font-weight:800;">재무레버리지</text>
+<text x="890.0" y="160.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:20px;font-weight:800;">1.66</text>
+<rect x="790.0" y="116.0" width="200.0" height="3.0" rx="0" fill="var(--c-ochre)"/>
+<text x="754.0" y="152.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-size:24px;font-weight:800;">×</text>
+<line x1="540.0" y1="80.0" x2="540.0" y2="100.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="66.0" y1="198.0" x2="66.0" y2="174.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<rect x="-12.0" y="198.0" width="156.0" height="40.0" rx="5" fill="var(--panel)"/>
+<text x="66.0" y="222.0" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">매출총이익률 27.8%</text>
+<line x1="234.0" y1="198.0" x2="234.0" y2="174.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<rect x="156.0" y="198.0" width="156.0" height="40.0" rx="5" fill="var(--panel)"/>
+<text x="234.0" y="222.0" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">판관비율 18.7%</text>
+<line x1="416.0" y1="198.0" x2="416.0" y2="174.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<rect x="338.0" y="198.0" width="156.0" height="40.0" rx="5" fill="var(--panel)"/>
+<text x="416.0" y="222.0" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">재고회전 5.4회</text>
+<line x1="584.0" y1="198.0" x2="584.0" y2="174.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<rect x="506.0" y="198.0" width="156.0" height="40.0" rx="5" fill="var(--panel)"/>
+<text x="584.0" y="222.0" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">채권회전 8.9회</text>
+<line x1="766.0" y1="198.0" x2="766.0" y2="174.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<rect x="688.0" y="198.0" width="156.0" height="40.0" rx="5" fill="var(--panel)"/>
+<text x="766.0" y="222.0" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">순차입금 82억</text>
+<line x1="934.0" y1="198.0" x2="934.0" y2="174.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<rect x="856.0" y="198.0" width="156.0" height="40.0" rx="5" fill="var(--panel)"/>
+<text x="934.0" y="222.0" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">자기자본 198억</text>
+<text x="40.0" y="284.0" class="ls" text-anchor="start">동종 평균 순이익률은 7.1%로 더 높습니다. 이 ROE는 마진이 아니라 회전율이 만들었습니다.</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> ROE가 어느 항에서 왔고, 그 항은 또 무엇으로 되어 있는가.</div><div class="w"><b>함정.</b> 세 항의 곱이 ROE와 안 맞으면 평잔·기말이 섞인 것입니다. 두 단까지만 내려갑니다. 세 단이면 못 읽습니다.</div></div></figure>
+<figure class="ex" id="e15"><div class="ex-head"><span class="ex-no">EXHIBIT 15</span><h3>누적 생산 두 배마다 단가가 12% 내렸습니다</h3><span class="tag">Experience Curve (log-log)</span></div><div class="ex-chart"><svg viewBox="0 0 1080 340" role="img" aria-label="누적 생산량 로그축 대 단가 로그축 경험 곡선">
+<line x1="80.0" y1="244.0" x2="830.0" y2="244.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="248.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">1,000</text>
+<line x1="80.0" y1="157.5" x2="830.0" y2="157.5" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="161.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">1,200</text>
+<line x1="80.0" y1="84.3" x2="830.0" y2="84.3" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="88.3" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">1,400</text>
+<line x1="163.3" y1="36.0" x2="163.3" y2="294.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="163.3" y="312.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">40</text>
+<line x1="364.0" y1="36.0" x2="364.0" y2="294.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="364.0" y="312.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">80</text>
+<line x1="564.7" y1="36.0" x2="564.7" y2="294.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="564.7" y="312.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">160</text>
+<line x1="765.4" y1="36.0" x2="765.4" y2="294.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="765.4" y="312.0" class="f" text-anchor="middle" style="fill:var(--ink-3);font-size:11px;">320</text>
+<polyline points="163.3,77.6 364.0,138.1 564.7,198.8 765.4,259.4" fill="none" stroke="var(--c-navy)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="163.3" cy="77.6" r="5.5" fill="var(--c-navy)"/>
+<text x="173.3" y="67.6" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:700;">1,420원</text>
+<circle cx="364.0" cy="138.1" r="5.5" fill="var(--c-navy)"/>
+<text x="374.0" y="128.1" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:700;">1,250원</text>
+<circle cx="564.7" cy="198.8" r="5.5" fill="var(--c-navy)"/>
+<text x="574.7" y="188.8" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:700;">1,100원</text>
+<circle cx="765.4" cy="259.4" r="5.5" fill="var(--c-navy)"/>
+<text x="775.4" y="249.4" class="f" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:700;">968원</text>
+<line x1="364.0" y1="167.5" x2="364.0" y2="175.5" stroke="var(--ink-3)" stroke-width="1"/>
+<line x1="564.7" y1="167.5" x2="564.7" y2="175.5" stroke="var(--ink-3)" stroke-width="1"/>
+<line x1="364.0" y1="175.5" x2="564.7" y2="175.5" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="464.3" y="189.5" class="f" text-anchor="middle" style="fill:var(--ink-2);font-weight:600;">두 배 = −12%</text>
+<text x="846.0" y="263.4" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">누적 320천 톤</text>
+<text x="846.0" y="281.4" class="ls" text-anchor="start">다음 두 배(640천 톤)면 852원</text>
+<text x="830.0" y="330.0" class="lb" text-anchor="end" style="fill:var(--ink);font-weight:700;">누적 생산량 (천 톤, 로그) →</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 원가 하락이 우연인가 규모의 학습인가. 다음 두 배의 원가를 예측할 수 있는가.</div><div class="w"><b>함정.</b> 로그축임을 크게 적습니다. 선형으로 읽으면 하락이 멈춘 것처럼 보입니다. 원료가 급변한 해는 따로 표시합니다.</div></div></figure>
+<figure class="ex" id="e16"><div class="ex-head"><span class="ex-no">EXHIBIT 16</span><h3>외주 26천 톤은 판가보다 260원 비싸게 만듭니다</h3><span class="tag">Cost Curve</span></div><div class="ex-chart"><svg viewBox="0 0 1080 450" role="img" aria-label="공장별 원가 곡선: 가로 누적 물량, 세로 단가, 판가선과 재협상 시나리오">
+<line x1="90.0" y1="236.6" x2="1030.0" y2="236.6" stroke="var(--grid)" stroke-width="1"/>
+<text x="82.0" y="240.6" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">500</text>
+<line x1="90.0" y1="173.2" x2="1030.0" y2="173.2" stroke="var(--grid)" stroke-width="1"/>
+<text x="82.0" y="177.2" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">1,000</text>
+<line x1="90.0" y1="109.8" x2="1030.0" y2="109.8" stroke="var(--grid)" stroke-width="1"/>
+<text x="82.0" y="113.8" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">1,500</text>
+<line x1="90.0" y1="46.3" x2="1030.0" y2="46.3" stroke="var(--grid)" stroke-width="1"/>
+<text x="82.0" y="50.3" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">2,000</text>
+<rect x="91.5" y="150.3" width="302.5" height="149.7" rx="0" fill="var(--c-navy)" opacity="0.8"/>
+<text x="242.8" y="142.3" class="f" text-anchor="middle" style="font-size:13px;font-weight:700;">1,180</text>
+<text x="242.8" y="318.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:600;">1공장</text>
+<text x="242.8" y="334.0" class="ls" text-anchor="middle">52천 톤</text>
+<rect x="397.0" y="130.0" width="220.2" height="170.0" rx="0" fill="var(--c-navy)" opacity="0.8"/>
+<text x="507.1" y="122.0" class="f" text-anchor="middle" style="font-size:13px;font-weight:700;">1,340</text>
+<text x="507.1" y="318.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:600;">2공장</text>
+<text x="507.1" y="334.0" class="ls" text-anchor="middle">38천 톤</text>
+<rect x="620.2" y="107.2" width="255.5" height="192.8" rx="0" fill="var(--c-navy)" opacity="0.8"/>
+<text x="748.0" y="85.2" class="f" text-anchor="middle" style="font-size:13px;font-weight:700;">1,520</text>
+<text x="748.0" y="318.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:600;">3공장</text>
+<text x="748.0" y="334.0" class="ls" text-anchor="middle">44천 톤</text>
+<rect x="878.8" y="61.6" width="149.8" height="238.4" rx="0" fill="var(--c-clay)" opacity="0.85"/>
+<text x="953.6" y="53.6" class="f" text-anchor="middle" style="font-size:13px;font-weight:700;">1,880</text>
+<text x="953.6" y="318.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:600;">외주 위탁</text>
+<text x="953.6" y="334.0" class="ls" text-anchor="middle">26천 톤</text>
+<rect x="878.8" y="85.7" width="149.8" height="214.3" rx="0" fill="none" stroke="var(--c-teal)" stroke-width="1.8" stroke-dasharray="6 4"/>
+<text x="953.6" y="115.7" class="fw" text-anchor="middle">재협상 목표 1,690</text>
+<line x1="90.0" y1="94.5" x2="1030.0" y2="94.5" stroke="var(--c-ochre)" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="98.0" y="84.5" class="ls" text-anchor="start" style="fill:var(--c-ochre);font-weight:800;">평균 판가 1,620원</text>
+<rect x="90.0" y="356.0" width="470.0" height="52.0" rx="3" fill="var(--plot)" stroke="var(--rule)" stroke-width="1"/>
+<text x="102.0" y="377.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;">외주 26천 톤 × (1,880 − 1,620) = 연 6.8억 역마진  ①</text>
+<text x="102.0" y="395.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;">재협상 −190원 성사 시 연 4.9억 회복  ·  잔여는 3공장 증설로</text>
+<text x="590.0" y="378.0" class="ls" text-anchor="start" style="font-size:11.5px;">단위당 총원가는 고정비 배부 포함 기준입니다.</text>
+<text x="590.0" y="396.0" class="ls" text-anchor="start" style="font-size:11.5px;">변동비 기준으로는 외주도 판가를 밑돌지 않습니다.</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 어느 생산 구간이 판가를 밑도는가.</div><div class="w"><b>함정.</b> 고정비 배부 포함인지 변동비 기준인지에 따라 결론이 뒤집힙니다. 이 그림 하나로 계약 해지를 결정하지 않습니다.</div></div></figure>
+</section>
+<section class="sect" id="p4"><div class="sect-head"><div class="num">PART IV</div><div><h2>시장·경쟁 · 동종 안에서 어디에 있는가</h2><p>순위는 비교군이 바뀌면 뒤집힙니다. 분포의 어디인지, 어느 방향으로 움직이는지, 규모와 수익성을 동시에 봅니다.</p></div></div>
+<figure class="ex" id="e17"><div class="ex-head"><span class="ex-no">EXHIBIT 17</span><h3>매출은 급식이 크고 이익률은 가공이 높습니다</h3><span class="tag">Marimekko</span></div><div class="ex-chart"><svg viewBox="0 0 1080 380" role="img" aria-label="가변 폭 마리메꼬: 폭이 매출, 칸이 구성비">
+<rect x="40.0" y="24.0" width="12.0" height="12.0" rx="2" fill="var(--c-navy)" opacity="0.85"/>
+<text x="60.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">매출원가</text>
+<rect x="180.0" y="24.0" width="12.0" height="12.0" rx="2" fill="var(--c-navy)" opacity="0.5"/>
+<text x="200.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">판매관리비</text>
+<rect x="320.0" y="24.0" width="12.0" height="12.0" rx="2" fill="var(--c-teal)" opacity="0.9"/>
+<text x="340.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">영업이익</text>
+<rect x="41.5" y="60.0" width="459.5" height="197.6" rx="0" fill="var(--c-navy)" opacity="0.85"/>
+<text x="271.2" y="163.8" class="fw" text-anchor="middle" style="font-size:13px;font-weight:800;">76%</text>
+<rect x="41.5" y="257.6" width="459.5" height="46.8" rx="0" fill="var(--c-navy)" opacity="0.5"/>
+<text x="271.2" y="286.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:800;">18%</text>
+<rect x="41.5" y="304.4" width="459.5" height="15.6" rx="0" fill="var(--c-teal)" opacity="0.9"/>
+<text x="271.2" y="344.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:700;">급식</text>
+<text x="271.2" y="362.0" class="ls" text-anchor="middle">매출 148억</text>
+<rect x="504.0" y="60.0" width="259.5" height="182.0" rx="0" fill="var(--c-navy)" opacity="0.85"/>
+<text x="633.8" y="156.0" class="fw" text-anchor="middle" style="font-size:13px;font-weight:800;">70%</text>
+<rect x="504.0" y="242.0" width="259.5" height="41.6" rx="0" fill="var(--c-navy)" opacity="0.5"/>
+<text x="633.8" y="267.8" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:800;">16%</text>
+<rect x="504.0" y="283.6" width="259.5" height="36.4" rx="0" fill="var(--c-teal)" opacity="0.9"/>
+<text x="633.8" y="306.8" class="fw" text-anchor="middle" style="font-size:13px;font-weight:800;">14%</text>
+<text x="633.8" y="344.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:700;">유통(오프)</text>
+<text x="633.8" y="362.0" class="ls" text-anchor="middle">매출 84억</text>
+<rect x="766.5" y="60.0" width="84.5" height="209.0" rx="0" fill="var(--c-navy)" opacity="0.85"/>
+<text x="808.8" y="169.5" class="fw" text-anchor="middle" style="font-size:13px;font-weight:800;">82%</text>
+<rect x="766.5" y="269.0" width="84.5" height="51.0" rx="0" fill="var(--c-navy)" opacity="0.5"/>
+<text x="808.8" y="299.5" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:800;">20%</text>
+<rect x="766.5" y="322.0" width="84.5" height="6.0" rx="1" fill="var(--c-clay)"/>
+<text x="808.8" y="344.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:700;">온라인</text>
+<text x="808.8" y="362.0" class="ls" text-anchor="middle">매출 28억</text>
+<rect x="854.0" y="60.0" width="184.5" height="174.2" rx="0" fill="var(--c-navy)" opacity="0.85"/>
+<text x="946.2" y="152.1" class="fw" text-anchor="middle" style="font-size:13px;font-weight:800;">67%</text>
+<rect x="854.0" y="234.2" width="184.5" height="52.0" rx="0" fill="var(--c-navy)" opacity="0.5"/>
+<text x="946.2" y="265.2" class="f" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:800;">20%</text>
+<rect x="854.0" y="286.2" width="184.5" height="33.8" rx="0" fill="var(--c-teal)" opacity="0.9"/>
+<text x="946.2" y="308.1" class="fw" text-anchor="middle" style="font-size:13px;font-weight:800;">13%</text>
+<text x="946.2" y="344.0" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:700;">가공</text>
+<text x="946.2" y="362.0" class="ls" text-anchor="middle">매출 60억</text>
+<text x="808.8" y="52.0" class="ls" text-anchor="middle" style="fill:var(--c-clay);font-weight:700;">온라인은 영업적자라 이익 칸이 없습니다</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 규모와 구성비를 한 그림에서. 면적이 곧 금액입니다.</div><div class="w"><b>함정.</b> 기둥이 다섯을 넘으면 라벨이 죽습니다. 작은 것은 기타로 묶고 묶었다고 밝힙니다.</div></div></figure>
+<figure class="ex" id="e18"><div class="ex-head"><span class="ex-no">EXHIBIT 18</span><h3>온라인만 스프레드가 음수인데 성장은 가장 빠릅니다</h3><span class="tag">ROIC Spread vs Growth</span></div><div class="ex-chart"><svg viewBox="0 0 1080 380" role="img" aria-label="ROIC 스프레드와 성장의 버블 지도">
+<line x1="80.0" y1="214.0" x2="1010.0" y2="214.0" stroke="var(--rule)" stroke-width="1.4"/>
+<text x="1010.0" y="206.0" class="ls" text-anchor="end">스프레드 0 · 이 아래는 굴러갈수록 가치 파괴</text>
+<line x1="80.0" y1="286.5" x2="1010.0" y2="286.5" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="290.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">-5%p</text>
+<line x1="80.0" y1="141.5" x2="1010.0" y2="141.5" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="145.5" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">+5%p</text>
+<line x1="80.0" y1="69.0" x2="1010.0" y2="69.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="73.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">+10%p</text>
+<circle cx="257.1" cy="170.5" r="42.0" fill="var(--c-navy)"/>
+<text x="257.1" y="119.5" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:750;">급식</text>
+<text x="257.1" y="228.5" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">+3.0%p</text>
+<circle cx="345.7" cy="103.8" r="35.5" fill="var(--c-navy)"/>
+<text x="345.7" y="59.3" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:750;">유통(오프)</text>
+<text x="345.7" y="155.3" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">+7.6%p</text>
+<circle cx="877.1" cy="287.9" r="27.8" fill="var(--c-clay)"/>
+<text x="877.1" y="251.1" class="l" text-anchor="middle" style="fill:var(--c-clay);font-size:12.5px;font-weight:750;">온라인</text>
+<text x="877.1" y="331.8" class="f" text-anchor="middle" style="fill:var(--c-clay);font-size:11.5px;font-weight:700;">-5.1%p</text>
+<circle cx="478.6" cy="80.6" r="28.7" fill="var(--c-navy)"/>
+<text x="478.6" y="42.9" class="l" text-anchor="middle" style="fill:var(--ink);font-size:12.5px;font-weight:750;">가공</text>
+<text x="478.6" y="125.3" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:11.5px;font-weight:700;">+9.2%p</text>
+<text x="1010.0" y="360.0" class="lb" text-anchor="end" style="fill:var(--ink);font-weight:700;">매출 성장률 (%) →</text>
+<text x="80.0" y="28.0" class="ls" text-anchor="start">세로 = ROIC − WACC · 원 크기 = 투하자본</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 성장이 가치를 만드는 사업인가 태우는 사업인가.</div><div class="w"><b>함정.</b> 스프레드가 음수인 사업의 성장은 축하가 아니라 경보입니다. 원 크기(투하자본)까지 세 변수라 그 이상 얹지 않습니다.</div></div></figure>
+<figure class="ex" id="e19"><div class="ex-head"><span class="ex-no">EXHIBIT 19</span><h3>2년 사이 서린푸드가 두 곳을 제쳤습니다</h3><span class="tag">Slope Graph</span></div><div class="ex-chart"><svg viewBox="0 0 1080 360" role="img" aria-label="2023과 2025 사이 동종 마진 기울기 그래프">
+<line x1="330.0" y1="38.0" x2="330.0" y2="326.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="750.0" y1="38.0" x2="750.0" y2="326.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="330.0" y="344.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-weight:700;">2023</text>
+<text x="750.0" y="344.0" class="l" text-anchor="middle" style="fill:var(--ink-3);font-weight:700;">2025</text>
+<line x1="330.0" y1="73.4" x2="750.0" y2="85.6" stroke="var(--c-slate)" stroke-width="1.8" opacity="0.75"/>
+<circle cx="330.0" cy="73.4" r="4.0" fill="var(--c-slate)"/>
+<circle cx="750.0" cy="85.6" r="4.0" fill="var(--c-slate)"/>
+<text x="316.0" y="77.4" class="l" text-anchor="end" style="fill:var(--ink-3);font-size:12px;font-weight:600;">대한  18.6</text>
+<text x="764.0" y="89.6" class="l" text-anchor="start" style="fill:var(--ink-3);font-size:12px;font-weight:600;">18.2  대한</text>
+<line x1="330.0" y1="158.6" x2="750.0" y2="140.4" stroke="var(--c-slate)" stroke-width="1.8" opacity="0.75"/>
+<circle cx="330.0" cy="158.6" r="4.0" fill="var(--c-slate)"/>
+<circle cx="750.0" cy="140.4" r="4.0" fill="var(--c-slate)"/>
+<text x="316.0" y="162.6" class="l" text-anchor="end" style="fill:var(--ink-3);font-size:12px;font-weight:600;">한울  15.8</text>
+<text x="764.0" y="144.4" class="l" text-anchor="start" style="fill:var(--ink-3);font-size:12px;font-weight:600;">16.4  한울</text>
+<line x1="330.0" y1="256.1" x2="750.0" y2="183.0" stroke="var(--c-navy)" stroke-width="3.4"/>
+<circle cx="330.0" cy="256.1" r="5.5" fill="var(--c-navy)"/>
+<circle cx="750.0" cy="183.0" r="5.5" fill="var(--c-navy)"/>
+<text x="316.0" y="260.1" class="l" text-anchor="end" style="fill:var(--ink);font-size:13px;font-weight:800;">서린푸드  12.6</text>
+<text x="764.0" y="187.0" class="l" text-anchor="start" style="fill:var(--ink);font-size:13px;font-weight:800;">15.0  서린푸드</text>
+<line x1="330.0" y1="228.7" x2="750.0" y2="240.8" stroke="var(--c-slate)" stroke-width="1.8" opacity="0.75"/>
+<circle cx="330.0" cy="228.7" r="4.0" fill="var(--c-slate)"/>
+<circle cx="750.0" cy="240.8" r="4.0" fill="var(--c-slate)"/>
+<text x="316.0" y="232.7" class="l" text-anchor="end" style="fill:var(--ink-3);font-size:12px;font-weight:600;">명진  13.5</text>
+<text x="764.0" y="244.8" class="l" text-anchor="start" style="fill:var(--ink-3);font-size:12px;font-weight:600;">13.1  명진</text>
+<line x1="330.0" y1="268.2" x2="750.0" y2="280.4" stroke="var(--c-slate)" stroke-width="1.8" opacity="0.75"/>
+<circle cx="330.0" cy="268.2" r="4.0" fill="var(--c-slate)"/>
+<circle cx="750.0" cy="280.4" r="4.0" fill="var(--c-slate)"/>
+<text x="316.0" y="272.2" class="l" text-anchor="end" style="fill:var(--ink-3);font-size:12px;font-weight:600;">가온  12.2</text>
+<text x="764.0" y="284.4" class="l" text-anchor="start" style="fill:var(--ink-3);font-size:12px;font-weight:600;">11.8  가온</text>
+<text x="880.0" y="187.0" class="f" text-anchor="start" style="fill:var(--c-teal);font-size:13px;font-weight:800;">두 계단 상승</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 순위가 어떻게 바뀌었는가. 시계열 다섯 개를 겹치는 것보다 두 시점이 명확할 때.</div><div class="w"><b>함정.</b> 중간 연도의 궤적은 지워집니다. 중간에 반전이 있었다면 이 형식이 그걸 숨깁니다.</div></div></figure>
+<figure class="ex" id="e20"><div class="ex-head"><span class="ex-no">EXHIBIT 20</span><h3>온라인만 여섯 분기 연속 내리막입니다</h3><span class="tag">Small Multiples</span></div><div class="ex-chart"><svg viewBox="0 0 1080 320" role="img" aria-label="네 사업부 분기 이익률 소형 다중 격자">
+<rect x="40.0" y="64.0" width="232.0" height="190.0" rx="4" fill="var(--panel)"/>
+<text x="52.0" y="52.0" class="l" text-anchor="start" style="fill:var(--ink);font-size:13.5px;font-weight:800;">급식</text>
+<line x1="50.0" y1="214.3" x2="262.0" y2="214.3" stroke="var(--rule-soft)" stroke-width="1"/>
+<polyline points="54.0,147.9 94.8,149.8 135.6,150.7 176.4,151.6 217.2,150.7 258.0,151.6" fill="none" stroke="var(--c-navy)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="258.0" cy="151.6" r="4.5" fill="var(--c-navy)"/>
+<text x="254.0" y="141.6" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">6.8%</text>
+<rect x="296.0" y="64.0" width="232.0" height="190.0" rx="4" fill="var(--panel)"/>
+<text x="308.0" y="52.0" class="l" text-anchor="start" style="fill:var(--ink);font-size:13.5px;font-weight:800;">유통(오프)</text>
+<line x1="306.0" y1="214.3" x2="518.0" y2="214.3" stroke="var(--rule-soft)" stroke-width="1"/>
+<polyline points="310.0,96.3 350.8,93.5 391.6,91.7 432.4,88.9 473.2,89.8 514.0,88.9" fill="none" stroke="var(--c-navy)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="514.0" cy="88.9" r="4.5" fill="var(--c-navy)"/>
+<text x="510.0" y="78.9" class="f" text-anchor="middle" style="fill:var(--ink-2);font-size:12px;font-weight:700;">13.6%</text>
+<rect x="552.0" y="64.0" width="232.0" height="190.0" rx="4" fill="var(--panel)"/>
+<text x="564.0" y="52.0" class="l" text-anchor="start" style="fill:var(--c-clay);font-size:13.5px;font-weight:800;">온라인</text>
+<line x1="562.0" y1="214.3" x2="774.0" y2="214.3" stroke="var(--rule-soft)" stroke-width="1"/>
+<polyline points="566.0,203.3 606.8,210.6 647.6,216.2 688.4,222.6 729.2,227.2 770.0,229.1" fill="none" stroke="var(--c-clay)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="770.0" cy="229.1" r="4.5" fill="var(--c-clay)"/>
+<text x="766.0" y="249.1" class="f" text-anchor="middle" style="fill:var(--c-clay);font-size:12px;font-weight:700;">-1.6%</text>
+<rect x="808.0" y="64.0" width="232.0" height="190.0" rx="4" fill="var(--panel)"/>
+<text x="820.0" y="52.0" class="l" text-anchor="start" style="fill:var(--ink);font-size:13.5px;font-weight:800;">가공</text>
+<line x1="818.0" y1="214.3" x2="1030.0" y2="214.3" stroke="var(--rule-soft)" stroke-width="1"/>
+<polyline points="822.0,102.7 862.8,99.1 903.6,96.3 944.4,94.4 985.2,92.6 1026.0,91.7" fill="none" stroke="var(--c-navy)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1026.0" cy="91.7" r="4.5" fill="var(--c-navy)"/>
+<text x="1016.0" y="81.7" class="f" text-anchor="end" style="fill:var(--ink-2);font-size:12px;font-weight:700;">13.3%</text>
+<text x="40.0" y="288.0" class="ls" text-anchor="start">같은 축(−3~15%), 같은 기간(6분기)입니다. 축을 패널마다 다르게 잡으면 이 형식은 거짓말이 됩니다.</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 네 사업부의 궤적을 겹치지 않고 나란히. 한 패널에 겹치면 선 네 개가 엉킵니다.</div><div class="w"><b>함정.</b> 모든 패널의 축과 기간을 동일하게 잡습니다. 패널마다 축이 다르면 이 형식은 거짓말이 됩니다.</div></div></figure>
+<figure class="ex" id="e21"><div class="ex-head"><span class="ex-no">EXHIBIT 21</span><h3>5년에 걸쳐 1분위 밖에서 중앙값까지 왔습니다</h3><span class="tag">Box Plot</span></div><div class="ex-chart"><svg viewBox="0 0 1080 360" role="img" aria-label="동종 12사 마진 분포 상자수염과 자사 위치">
+<line x1="212.9" y1="68.0" x2="801.4" y2="68.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="212.9" y1="61.0" x2="212.9" y2="75.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="801.4" y1="61.0" x2="801.4" y2="75.0" stroke="var(--rule)" stroke-width="1.4"/>
+<rect x="367.1" y="57.0" width="308.6" height="22.0" rx="3" fill="var(--c-slate)" opacity="0.35"/>
+<line x1="544.3" y1="57.0" x2="544.3" y2="79.0" stroke="var(--c-navy)" stroke-width="2.6"/>
+<path d="M390.0,58.0 L399.0,68.0 L390.0,78.0 L381.0,68.0 Z" fill="var(--c-ochre)"/>
+<text x="134.0" y="72.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:650;">2021</text>
+<text x="964.0" y="72.0" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">10.2%</text>
+<line x1="241.4" y1="124.0" x2="830.0" y2="124.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="241.4" y1="117.0" x2="241.4" y2="131.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="830.0" y1="117.0" x2="830.0" y2="131.0" stroke="var(--rule)" stroke-width="1.4"/>
+<rect x="390.0" y="113.0" width="308.6" height="22.0" rx="3" fill="var(--c-slate)" opacity="0.35"/>
+<line x1="572.9" y1="113.0" x2="572.9" y2="135.0" stroke="var(--c-navy)" stroke-width="2.6"/>
+<path d="M458.6,114.0 L467.6,124.0 L458.6,134.0 L449.6,124.0 Z" fill="var(--c-ochre)"/>
+<text x="134.0" y="128.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:650;">2022</text>
+<text x="964.0" y="128.0" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">11.4%</text>
+<line x1="275.7" y1="180.0" x2="835.7" y2="180.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="275.7" y1="173.0" x2="275.7" y2="187.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="835.7" y1="173.0" x2="835.7" y2="187.0" stroke="var(--rule)" stroke-width="1.4"/>
+<rect x="430.0" y="169.0" width="291.4" height="22.0" rx="3" fill="var(--c-slate)" opacity="0.35"/>
+<line x1="595.7" y1="169.0" x2="595.7" y2="191.0" stroke="var(--c-navy)" stroke-width="2.6"/>
+<path d="M527.1,170.0 L536.1,180.0 L527.1,190.0 L518.1,180.0 Z" fill="var(--c-ochre)"/>
+<text x="134.0" y="184.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:650;">2023</text>
+<text x="964.0" y="184.0" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">12.6%</text>
+<line x1="310.0" y1="236.0" x2="841.4" y2="236.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="310.0" y1="229.0" x2="310.0" y2="243.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="841.4" y1="229.0" x2="841.4" y2="243.0" stroke="var(--rule)" stroke-width="1.4"/>
+<rect x="452.9" y="225.0" width="280.0" height="22.0" rx="3" fill="var(--c-slate)" opacity="0.35"/>
+<line x1="630.0" y1="225.0" x2="630.0" y2="247.0" stroke="var(--c-navy)" stroke-width="2.6"/>
+<path d="M601.4,226.0 L610.4,236.0 L601.4,246.0 L592.4,236.0 Z" fill="var(--c-ochre)"/>
+<text x="134.0" y="240.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:650;">2024</text>
+<text x="964.0" y="240.0" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">13.9%</text>
+<line x1="344.3" y1="292.0" x2="847.1" y2="292.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="344.3" y1="285.0" x2="344.3" y2="299.0" stroke="var(--rule)" stroke-width="1.4"/>
+<line x1="847.1" y1="285.0" x2="847.1" y2="299.0" stroke="var(--rule)" stroke-width="1.4"/>
+<rect x="481.4" y="281.0" width="262.9" height="22.0" rx="3" fill="var(--c-slate)" opacity="0.35"/>
+<line x1="664.3" y1="281.0" x2="664.3" y2="303.0" stroke="var(--c-navy)" stroke-width="2.6"/>
+<path d="M664.3,282.0 L673.3,292.0 L664.3,302.0 L655.3,292.0 Z" fill="var(--c-ochre)"/>
+<text x="134.0" y="296.0" class="l" text-anchor="end" style="fill:var(--ink);font-weight:650;">2025</text>
+<text x="964.0" y="296.0" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:12.5px;font-weight:800;">15.0%</text>
+<text x="150.0" y="348.0" class="ls" text-anchor="start">상자 = 1~3분위 · 세로선 = 중앙값 · 마름모 = 자사 · 2021년 1분위 밖에서 2025년 중앙값까지</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 순위가 아니라 분포의 어디에 있는가, 그리고 어느 방향으로 움직였는가.</div><div class="w"><b>함정.</b> 표본이 열둘이면 사분위가 성립하는 하한선입니다. 다섯 곳으로 상자를 그리지 않습니다.</div></div></figure>
+<figure class="ex" id="e22"><div class="ex-head"><span class="ex-no">EXHIBIT 22</span><h3>가공은 2.9%p 앞서고 온라인은 5.5%p 뒤집니다</h3><span class="tag">Dumbbell / Gap Chart</span></div><div class="ex-chart"><svg viewBox="0 0 1080 320" role="img" aria-label="사업부 이익률과 동종 중앙값의 격차 덤벨">
+<line x1="330.0" y1="36.0" x2="330.0" y2="276.0" stroke="var(--rule-soft)" stroke-width="1" stroke-dasharray="4 4"/>
+<line x1="694.0" y1="73.0" x2="795.5" y2="73.0" stroke="var(--c-teal)" stroke-width="5" opacity="0.85"/>
+<circle cx="694.0" cy="73.0" r="7.0" fill="var(--c-slate)"/>
+<circle cx="795.5" cy="73.0" r="8.5" fill="var(--c-navy)"/>
+<text x="174.0" y="77.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:13px;font-weight:700;">가공</text>
+<text x="904.0" y="77.0" class="f" text-anchor="start" style="fill:var(--c-teal);font-size:13px;font-weight:800;">+2.9%p</text>
+<line x1="746.5" y1="131.0" x2="806.0" y2="131.0" stroke="var(--c-teal)" stroke-width="5" opacity="0.85"/>
+<circle cx="746.5" cy="131.0" r="7.0" fill="var(--c-slate)"/>
+<circle cx="806.0" cy="131.0" r="8.5" fill="var(--c-navy)"/>
+<text x="174.0" y="135.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:13px;font-weight:700;">유통(오프)</text>
+<text x="904.0" y="135.0" class="f" text-anchor="start" style="fill:var(--c-teal);font-size:13px;font-weight:800;">+1.7%p</text>
+<line x1="568.0" y1="189.0" x2="641.5" y2="189.0" stroke="var(--c-clay)" stroke-width="5" opacity="0.85"/>
+<circle cx="641.5" cy="189.0" r="7.0" fill="var(--c-slate)"/>
+<circle cx="568.0" cy="189.0" r="8.5" fill="var(--c-clay)"/>
+<text x="174.0" y="193.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:13px;font-weight:700;">급식</text>
+<text x="904.0" y="193.0" class="f" text-anchor="start" style="fill:var(--c-clay);font-size:13px;font-weight:800;">-2.1%p</text>
+<line x1="274.0" y1="247.0" x2="466.5" y2="247.0" stroke="var(--c-clay)" stroke-width="5" opacity="0.85"/>
+<circle cx="466.5" cy="247.0" r="7.0" fill="var(--c-slate)"/>
+<circle cx="274.0" cy="247.0" r="8.5" fill="var(--c-clay)"/>
+<text x="174.0" y="251.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:13px;font-weight:700;">온라인</text>
+<text x="904.0" y="251.0" class="f" text-anchor="start" style="fill:var(--c-clay);font-size:13px;font-weight:800;">-5.5%p</text>
+<text x="190.0" y="306.0" class="ls" text-anchor="start">진한 점 = 자사 · 회색 점 = 동종 중앙값 · 전사 평균 하나로는 네 사실이 다 지워집니다</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 자사와 기준값이 항목별로 얼마나 벌어져 있는가.</div><div class="w"><b>함정.</b> 행끼리 단위가 같아야 합니다. 마진과 회전일을 한 그림에 놓으면 축이 무너집니다.</div></div></figure>
+</section>
+<section class="sect" id="p5"><div class="sect-head"><div class="num">PART V</div><div><h2>고객·실행 · 남는 고객, 굴러가는 과제</h2><p>고객이 남아 있는가, 이익은 어느 고객에게서 오는가, 그리고 약속한 개선이 실제로 실현되고 있는가.</p></div></div>
+<figure class="ex" id="e23"><div class="ex-head"><span class="ex-no">EXHIBIT 23</span><h3>상위 여덟 곳이 이익의 128%를 법니다</h3><span class="tag">Whale Curve</span></div><div class="ex-chart"><svg viewBox="0 0 1080 380" role="img" aria-label="거래처별 누적 이익 고래 곡선">
+<line x1="80.0" y1="225.0" x2="860.0" y2="225.0" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="229.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">50%</text>
+<line x1="80.0" y1="120.0" x2="860.0" y2="120.0" stroke="var(--rule)" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="72.0" y="124.0" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">100%</text>
+<polygon points="80.0,330.0 112.5,280.1 145.0,236.0 177.5,198.6 210.0,166.0 242.5,136.3 275.0,109.5 307.5,84.5 340.0,61.5 372.5,62.5 405.0,63.4 437.5,65.3 470.0,67.3 502.5,70.1 535.0,73.0 567.5,75.9 600.0,79.7 632.5,83.6 665.0,87.4 697.5,92.2 730.0,97.0 762.5,101.8 795.0,107.5 827.5,113.3 860.0,120.0 860.0,330.0" fill="var(--c-teal)" opacity="0.12"/>
+<polyline points="112.5,280.1 145.0,236.0 177.5,198.6 210.0,166.0 242.5,136.3 275.0,109.5 307.5,84.5 340.0,61.5 372.5,62.5 405.0,63.4 437.5,65.3 470.0,67.3 502.5,70.1 535.0,73.0 567.5,75.9 600.0,79.7 632.5,83.6 665.0,87.4 697.5,92.2 730.0,97.0 762.5,101.8 795.0,107.5 827.5,113.3 860.0,120.0" fill="none" stroke="var(--c-navy)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="340.0" cy="61.5" r="6.0" fill="var(--c-ochre)"/>
+<text x="354.0" y="85.5" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:13.5px;font-weight:800;">상위 8곳에서 이익의 128%</text>
+<text x="872.0" y="124.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:650;">전체 24곳 = 100%</text>
+<text x="86.0" y="46.0" class="ls" text-anchor="start">꼬리 16곳이 이익 28%를 도로 깎습니다</text>
+<text x="860.0" y="354.0" class="lb" text-anchor="end" style="fill:var(--ink);font-weight:700;">거래처, 이익 큰 순 →</text>
+<line x1="80.0" y1="330.0" x2="860.0" y2="330.0" stroke="var(--rule)" stroke-width="1"/>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 이익이 어느 고객에게서 오고, 어느 고객이 도로 깎아 가는가.</div><div class="w"><b>함정.</b> 고객별 이익 배부(물류·영업비)가 절반의 싸움입니다. 배부 기준이 바뀌면 꼬리의 명단이 바뀝니다.</div></div></figure>
+<figure class="ex" id="e24"><div class="ex-head"><span class="ex-no">EXHIBIT 24</span><h3>2023년에 받은 거래처가 다릅니다</h3><span class="tag">Cohort Triangle + Pareto</span></div><div class="ex-chart"><svg viewBox="0 0 1080 470" role="img" aria-label="왼쪽 수주 코호트 유지율 삼각, 오른쪽 상위 거래처 집중도 파레토">
+<text x="30.0" y="34.0" class="t" text-anchor="start">A. 수주 코호트 유지율, 거래처 금액 기준 %</text>
+<text x="173.0" y="56.0" class="ls" text-anchor="middle">개시</text>
+<text x="239.0" y="56.0" class="ls" text-anchor="middle">1년</text>
+<text x="305.0" y="56.0" class="ls" text-anchor="middle">2년</text>
+<text x="371.0" y="56.0" class="ls" text-anchor="middle">3년</text>
+<text x="437.0" y="56.0" class="ls" text-anchor="middle">4년</text>
+<text x="503.0" y="56.0" class="ls" text-anchor="middle">5년</text>
+<text x="128.0" y="94.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12px;font-weight:600;">2021년 수주</text>
+<rect x="142.0" y="66.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.88"/>
+<text x="173.0" y="94.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">100</text>
+<rect x="208.0" y="66.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.6325214561975707"/>
+<text x="239.0" y="94.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">92</text>
+<rect x="274.0" y="66.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.453213196614723"/>
+<text x="305.0" y="94.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">86</text>
+<rect x="340.0" y="66.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.3095529682957659"/>
+<text x="371.0" y="94.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">81</text>
+<rect x="406.0" y="66.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.20024946623149747"/>
+<text x="437.0" y="94.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">77</text>
+<rect x="472.0" y="66.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.12388833929487057"/>
+<text x="503.0" y="94.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">74</text>
+<text x="128.0" y="146.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12px;font-weight:600;">2022년 수주</text>
+<rect x="142.0" y="118.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.88"/>
+<text x="173.0" y="146.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">100</text>
+<rect x="208.0" y="118.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.6935939960247383"/>
+<text x="239.0" y="146.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">94</text>
+<rect x="274.0" y="118.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.5122630698709286"/>
+<text x="305.0" y="146.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">88</text>
+<rect x="340.0" y="118.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.395003604381778"/>
+<text x="371.0" y="146.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">84</text>
+<rect x="406.0" y="118.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.28165785260627824"/>
+<text x="437.0" y="146.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">80</text>
+<text x="128.0" y="198.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12px;font-weight:600;">2023년 수주</text>
+<rect x="142.0" y="170.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.88"/>
+<text x="173.0" y="198.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">100</text>
+<rect x="208.0" y="170.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.6022099152586715"/>
+<text x="239.0" y="198.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">91</text>
+<rect x="274.0" y="170.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.42399635441378375"/>
+<text x="305.0" y="198.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">85</text>
+<rect x="340.0" y="170.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.28165785260627824"/>
+<text x="371.0" y="198.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:12px;font-weight:700;">80</text>
+<text x="128.0" y="250.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12px;font-weight:600;">2024년 수주</text>
+<rect x="142.0" y="222.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.88"/>
+<text x="173.0" y="250.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">100</text>
+<rect x="208.0" y="222.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.7243424916025755"/>
+<text x="239.0" y="250.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">95</text>
+<rect x="274.0" y="222.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.5720575593316738"/>
+<text x="305.0" y="250.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">90</text>
+<text x="128.0" y="302.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12px;font-weight:600;">2025년 수주</text>
+<rect x="142.0" y="274.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.88"/>
+<text x="173.0" y="302.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">100</text>
+<rect x="208.0" y="274.0" width="62.0" height="48.0" rx="3" fill="var(--c-navy)" opacity="0.7552250075593417"/>
+<text x="239.0" y="302.0" class="f" text-anchor="middle" style="fill:#fff;font-size:12px;font-weight:700;">96</text>
+<rect x="340.0" y="170.0" width="62.0" height="48.0" rx="3" fill="none" stroke="var(--c-clay)" stroke-width="2"/>
+<circle cx="422.0" cy="194.0" r="9.5" fill="var(--paper)" stroke="var(--ink-2)" stroke-width="1.2"/>
+<text x="422.0" y="198.0" class="f" text-anchor="middle" style="fill:var(--ink);font-size:11px;font-weight:700;">1</text>
+<text x="620.0" y="34.0" class="t" text-anchor="start">B. 거래처 집중도, 매출 320억 기준</text>
+<rect x="646.4" y="101.6" width="22.7" height="228.4" rx="1" fill="var(--c-navy)" opacity="0.9"/>
+<text x="657.7" y="345.0" class="ls" text-anchor="middle">A사</text>
+<rect x="681.8" y="144.9" width="22.7" height="185.1" rx="1" fill="var(--c-navy)" opacity="0.9"/>
+<text x="693.2" y="345.0" class="ls" text-anchor="middle">B사</text>
+<rect x="717.3" y="215.8" width="22.7" height="114.2" rx="1" fill="var(--c-navy)" opacity="0.9"/>
+<text x="728.6" y="345.0" class="ls" text-anchor="middle">C사</text>
+<rect x="752.7" y="247.3" width="22.7" height="82.7" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="764.1" y="345.0" class="ls" text-anchor="middle">D사</text>
+<rect x="788.2" y="259.1" width="22.7" height="70.9" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="799.5" y="345.0" class="ls" text-anchor="middle">E사</text>
+<rect x="823.7" y="270.9" width="22.7" height="59.1" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="835.0" y="345.0" class="ls" text-anchor="middle">F사</text>
+<rect x="859.1" y="282.7" width="22.7" height="47.3" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="870.5" y="345.0" class="ls" text-anchor="middle">G사</text>
+<rect x="894.6" y="290.6" width="22.7" height="39.4" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="905.9" y="345.0" class="ls" text-anchor="middle">H사</text>
+<rect x="930.0" y="298.5" width="22.7" height="31.5" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="941.4" y="345.0" class="ls" text-anchor="middle">I사</text>
+<rect x="965.5" y="302.4" width="22.7" height="27.6" rx="1" fill="var(--c-slate)" opacity="0.55"/>
+<text x="976.8" y="345.0" class="ls" text-anchor="middle">J사</text>
+<rect x="1000.9" y="142.9" width="22.7" height="187.1" rx="1" fill="var(--c-sand)" opacity="0.8"/>
+<text x="1012.3" y="345.0" class="ls" text-anchor="middle">기타</text>
+<polyline points="657.7,283.6 693.2,246.0 728.6,222.8 764.1,206.0 799.5,191.6 835.0,179.6 870.5,170.0 905.9,162.0 941.4,155.6 976.8,150.0 1012.3,74.0" fill="none" stroke="var(--c-ochre)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="728.6" cy="222.8" r="4.5" fill="var(--c-ochre)"/>
+<circle cx="1012.3" cy="74.0" r="4.5" fill="var(--c-ochre)"/>
+<text x="740.6" y="206.8" class="f" text-anchor="start" style="fill:var(--c-ochre);font-size:13px;font-weight:800;">상위 3사 42%</text>
+<circle cx="696.6" cy="206.8" r="9.5" fill="var(--paper)" stroke="var(--ink-2)" stroke-width="1.2"/>
+<text x="696.6" y="210.8" class="f" text-anchor="middle" style="fill:var(--ink);font-size:11px;font-weight:700;">2</text>
+<line x1="640.0" y1="330.0" x2="1030.0" y2="330.0" stroke="var(--rule)" stroke-width="1"/>
+<line x1="30.0" y1="366.0" x2="1050.0" y2="366.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="30.0" y="394.0" class="ls" text-anchor="start">이상 신호</text>
+<text x="30.0" y="416.0" class="f" text-anchor="start" style="fill:var(--c-clay);font-size:16px;font-weight:800;">2023년 수주만 3년차 80%</text>
+<text x="430.0" y="394.0" class="ls" text-anchor="start">확인 결과</text>
+<text x="430.0" y="416.0" class="f" text-anchor="start" style="fill:var(--ink);font-size:16px;font-weight:800;">그해 대형 신규 2건이 저마진 조건  ·  이탈 12억의 출처</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 언제 들어온 고객이 얼마나 남고, 매출은 몇 곳에 몰려 있는가.</div><div class="w"><b>함정.</b> 코호트의 빈 칸은 아직 그 기간을 안 지난 것입니다. 0으로 채우면 통째로 거짓말이 됩니다.</div></div></figure>
+<figure class="ex" id="e25"><div class="ex-head"><span class="ex-no">EXHIBIT 25</span><h3>3분기째, 실현은 계획의 70%입니다</h3><span class="tag">Synergy Phasing Curve</span></div><div class="ex-chart"><svg viewBox="0 0 1080 360" role="img" aria-label="개선 이익 실현 곡선: 계획 대 실제">
+<line x1="80.0" y1="235.7" x2="850.0" y2="235.7" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="239.7" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">3</text>
+<line x1="80.0" y1="157.4" x2="850.0" y2="157.4" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="161.4" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">6</text>
+<line x1="80.0" y1="79.1" x2="850.0" y2="79.1" stroke="var(--grid)" stroke-width="1"/>
+<text x="72.0" y="83.1" class="f" text-anchor="end" style="fill:var(--ink-3);font-size:11px;">9</text>
+<polyline points="80.0,301.0 190.0,274.9 300.0,235.7 410.0,186.1 520.0,136.6 630.0,100.0 740.0,79.1 850.0,71.3" fill="none" stroke="var(--c-slate)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5"/>
+<text x="862.0" y="75.3" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12.5px;font-weight:700;">계획 9.3억</text>
+<polyline points="80.0,303.6 190.0,285.3 300.0,259.2" fill="none" stroke="var(--c-navy)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="300.0" cy="259.2" r="6.0" fill="var(--c-navy)"/>
+<text x="312.0" y="249.2" class="f" text-anchor="start" style="fill:var(--ink);font-size:13px;font-weight:800;">실제 2.1억 · 계획의 70%</text>
+<line x1="300.0" y1="259.2" x2="300.0" y2="235.7" stroke="var(--c-clay)" stroke-width="1.6" stroke-dasharray="3 3"/>
+<text x="312.0" y="259.5" class="ls" text-anchor="start">지연은 전부 온라인 물류 통합</text>
+<text x="80.0" y="334.0" class="ls" text-anchor="middle">1Q</text>
+<text x="300.0" y="334.0" class="ls" text-anchor="middle">3Q</text>
+<text x="520.0" y="334.0" class="ls" text-anchor="middle">5Q</text>
+<text x="850.0" y="334.0" class="ls" text-anchor="middle">8Q</text>
+<line x1="80.0" y1="314.0" x2="850.0" y2="314.0" stroke="var(--rule)" stroke-width="1"/>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 약속한 개선 이익이 계획 곡선 위에 있는가.</div><div class="w"><b>함정.</b> 계획선을 나중에 다시 그리면 이 그림은 무의미해집니다. 착수 시점의 계획선을 박제합니다.</div></div></figure>
+<figure class="ex" id="e26"><div class="ex-head"><span class="ex-no">EXHIBIT 26</span><h3>여덟 과제 중 하나가 궤도를 벗어났습니다</h3><span class="tag">Bowling Chart</span></div><div class="ex-chart"><svg viewBox="0 0 1080 420" role="img" aria-label="과제별 분기 진행 상태 볼링 차트">
+<circle cx="266.0" cy="30.0" r="7.0" fill="var(--c-teal)"/>
+<text x="280.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:650;">완료</text>
+<circle cx="362.0" cy="30.0" r="7.0" fill="var(--c-navy)"/>
+<text x="376.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:650;">정상</text>
+<circle cx="458.0" cy="30.0" r="7.0" fill="var(--c-ochre)"/>
+<text x="472.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:650;">주의</text>
+<circle cx="554.0" cy="30.0" r="7.0" fill="var(--c-clay)"/>
+<text x="568.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:650;">이탈</text>
+<circle cx="650.0" cy="30.0" r="7.0" fill="var(--c-slate)"/>
+<text x="664.0" y="34.0" class="l" text-anchor="start" style="fill:var(--ink-2);font-size:12px;font-weight:650;">예정</text>
+<text x="319.0" y="56.0" class="ls" text-anchor="middle">25.4Q</text>
+<text x="437.0" y="56.0" class="ls" text-anchor="middle">26.1Q</text>
+<text x="555.0" y="56.0" class="ls" text-anchor="middle">26.2Q</text>
+<text x="673.0" y="56.0" class="ls" text-anchor="middle">26.3Q</text>
+<text x="791.0" y="56.0" class="ls" text-anchor="middle">26.4Q</text>
+<text x="909.0" y="56.0" class="ls" text-anchor="middle">27.1Q</text>
+<text x="244.0" y="89.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">외주 단가 재협상</text>
+<circle cx="319.0" cy="85.0" r="10.0" fill="var(--c-teal)"/>
+<circle cx="437.0" cy="85.0" r="10.0" fill="var(--c-teal)"/>
+<circle cx="555.0" cy="85.0" r="10.0" fill="var(--c-navy)"/>
+<text x="244.0" y="127.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">S&amp;OP 주간 사이클</text>
+<circle cx="319.0" cy="123.0" r="10.0" fill="var(--c-teal)"/>
+<circle cx="437.0" cy="123.0" r="10.0" fill="var(--c-navy)"/>
+<circle cx="555.0" cy="123.0" r="10.0" fill="var(--c-navy)"/>
+<line x1="60.0" y1="104.0" x2="1020.0" y2="104.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="244.0" y="165.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">SKU 하위 20% 정리</text>
+<circle cx="437.0" cy="161.0" r="10.0" fill="var(--c-navy)"/>
+<circle cx="555.0" cy="161.0" r="10.0" fill="var(--c-ochre)"/>
+<line x1="60.0" y1="142.0" x2="1020.0" y2="142.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="244.0" y="203.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">안전재고 재계약</text>
+<circle cx="555.0" cy="199.0" r="10.0" fill="var(--c-navy)"/>
+<circle cx="673.0" cy="199.0" r="10.0" fill="var(--c-slate)"/>
+<line x1="60.0" y1="180.0" x2="1020.0" y2="180.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="244.0" y="241.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">3공장 증설 검토</text>
+<circle cx="437.0" cy="237.0" r="10.0" fill="var(--c-navy)"/>
+<circle cx="555.0" cy="237.0" r="10.0" fill="var(--c-navy)"/>
+<circle cx="673.0" cy="237.0" r="10.0" fill="var(--c-slate)"/>
+<circle cx="791.0" cy="237.0" r="10.0" fill="var(--c-slate)"/>
+<line x1="60.0" y1="218.0" x2="1020.0" y2="218.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="244.0" y="279.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">온라인 가격 재설계</text>
+<circle cx="319.0" cy="275.0" r="10.0" fill="var(--c-teal)"/>
+<circle cx="437.0" cy="275.0" r="10.0" fill="var(--c-navy)"/>
+<line x1="60.0" y1="256.0" x2="1020.0" y2="256.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="244.0" y="317.0" class="l" text-anchor="end" style="fill:var(--c-clay);font-size:12.5px;font-weight:750;">물류 3PL 통합</text>
+<circle cx="437.0" cy="313.0" r="10.0" fill="var(--c-ochre)"/>
+<circle cx="555.0" cy="313.0" r="10.0" fill="var(--c-clay)" stroke="var(--c-clay)" stroke-width="2"/>
+<circle cx="673.0" cy="313.0" r="10.0" fill="var(--c-slate)"/>
+<line x1="60.0" y1="294.0" x2="1020.0" y2="294.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="244.0" y="355.0" class="l" text-anchor="end" style="fill:var(--ink);font-size:12.5px;font-weight:600;">가공 캐파 재배정</text>
+<circle cx="555.0" cy="351.0" r="10.0" fill="var(--c-navy)"/>
+<circle cx="673.0" cy="351.0" r="10.0" fill="var(--c-slate)"/>
+<circle cx="791.0" cy="351.0" r="10.0" fill="var(--c-slate)"/>
+<line x1="60.0" y1="332.0" x2="1020.0" y2="332.0" stroke="var(--rule-soft)" stroke-width="1"/>
+<text x="44.0" y="396.0" class="ls" text-anchor="start">여덟 과제 중 물류 3PL 통합이 이탈, SKU 정리가 주의입니다. 지연의 손익 영향은 실현 곡선에서 잽니다.</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 과제별로 어느 분기에 무엇이 밀렸는가. 경영회의 한 장 요약.</div><div class="w"><b>함정.</b> 상태 색은 규칙으로 정합니다(지연 N주 = 주의). 담당자 자기 신고에 맡기면 전부 초록이 됩니다.</div></div></figure>
+<figure class="ex" id="e27"><div class="ex-head"><span class="ex-no">EXHIBIT 27</span><h3>2028년 매출은 352억에서 468억 사이입니다</h3><span class="tag">Fan Chart</span></div><div class="ex-chart"><svg viewBox="0 0 1080 380" role="img" aria-label="매출 전망 부채꼴">
+<polygon points="80.0,314.4 240.0,282.5 400.0,244.9 560.0,183.4 720.0,128.8 880.0,76.4 880.0,208.5 720.0,217.6 560.0,232.4 400.0,244.9 240.0,282.5 80.0,314.4" fill="var(--c-slate)" opacity="0.18"/>
+<polygon points="80.0,314.4 240.0,282.5 400.0,244.9 560.0,196.0 720.0,153.8 880.0,116.3 880.0,175.5 720.0,194.8 560.0,218.7 400.0,244.9 240.0,282.5 80.0,314.4" fill="var(--c-slate)" opacity="0.3"/>
+<polyline points="80.0,314.4 240.0,282.5 400.0,244.9 560.0,208.5 720.0,175.5 880.0,147.0" fill="none" stroke="var(--c-navy)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="880.0" cy="147.0" r="5.5" fill="var(--c-navy)"/>
+<line x1="400.0" y1="40.0" x2="400.0" y2="336.0" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="408.0" y="54.0" class="ls" text-anchor="start">실적 | 전망</text>
+<text x="894.0" y="80.4" class="f" text-anchor="start" style="fill:var(--ink-3);font-size:11.5px;font-weight:600;">낙관 468</text>
+<text x="894.0" y="151.0" class="f" text-anchor="start" style="fill:var(--ink);font-size:13px;font-weight:800;">중심 406억</text>
+<text x="894.0" y="212.5" class="f" text-anchor="start" style="fill:var(--ink-3);font-size:11.5px;font-weight:600;">보수 352</text>
+<text x="80.0" y="356.0" class="ls" text-anchor="middle">2023</text>
+<text x="240.0" y="356.0" class="ls" text-anchor="middle">2024</text>
+<text x="400.0" y="356.0" class="ls" text-anchor="middle">2025</text>
+<text x="560.0" y="356.0" class="ls" text-anchor="middle">2026E</text>
+<text x="720.0" y="356.0" class="ls" text-anchor="middle">2027E</text>
+<text x="880.0" y="356.0" class="ls" text-anchor="middle">2028E</text>
+<line x1="80.0" y1="336.0" x2="880.0" y2="336.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="894.0" y="52.0" class="ls" text-anchor="start">실적 구간에는 띠가 없습니다</text>
+</svg></div><div class="ex-notes"><div class="q"><b>답하는 질문.</b> 전망이 얼마나 넓게 벌어지는가. 실행 계획의 결과 범위를 정직하게.</div><div class="w"><b>함정.</b> 실적 구간에 띠를 씌우지 않습니다. 밴드는 둘까지, 셋이면 농담이 안 갈립니다.</div></div></figure>
+</section>
+
+<div class="method">
+  <p><b>고르는 기준.</b> 막대로 답할 수 있으면 막대로 답합니다. 여기 27종은 전부 읽는 데 품이 더 드는 형식이라, 품을 들일 값이 있을 때만 씁니다. 분기·합류가 없으면 생키 대신 폭포, 두 시점이면 기울기, 분포면 상자, 세 변수면 버블까지. 네 번째 변수가 필요해지면 그림을 나눕니다.</p>
+  <p><b>제목 규칙.</b> 유형 이름은 오른쪽 위 태그로 밀고, 제목 자리에는 그림이 발견한 사실을 적습니다. "토네이도 민감도"가 아니라 "WACC 하나가 137억을 흔듭니다"입니다.</p>
+  <p><b>연속성.</b> 매출 320억 · EBITDA 48억 · CCC 57일 · EV 381억. 모든 전시물이 같은 회사의 같은 숫자에서 나왔고, 재무진단·머니플로우 보고서와도 이어집니다. 전부 예시 데이터입니다.</p>
+</div>
+
+<footer><span>EXHIBIT ATLAS · SEORIN EDITION · 2026.09</span><span>예시 데이터 · 배포 전 검토 필요</span></footer>
+</div></body></html>

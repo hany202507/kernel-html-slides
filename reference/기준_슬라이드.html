@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML 스킬 진단과 기준 스타일 재설계</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  /* ============================================================
+     테마 토큰 — 보고서(기준_보고서_B)와 같은 값을 쓴다.
+     아래 어느 규칙에도 색 리터럴을 직접 쓰지 않는다.
+     ============================================================ */
+  :root{
+    --bg:#FFFFFF;
+    --card:#FFFFFF;
+    --tint:#F7F9FC;
+    --ink:#0A1628;
+    --body:#39445A;
+    --muted:#6B7688;
+    --faint:#9AA3B2;
+    --line:#E3E7EE;
+    --line2:#F1F3F7;
+    --rule:#0A1628;
+
+    --a1:#1E50D8; --a1t:#1741B4; --a1b:#EAF0FF;   /* 블루 */
+    --a2:#4338CA; --a2t:#332BA6; --a2b:#EDEBFD;   /* 인디고 */
+    --a3:#C2761A; --a3t:#96590F; --a3b:#FBF1E1;   /* 앰버 */
+    --risk:#D4453B; --riskT:#B5322A; --riskB:#FDECEA;
+
+    --sh:0 1px 2px rgba(10,22,40,.04);
+    --sh-sm:0 1px 2px rgba(10,22,40,.035);
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--body);
+    font-variant-numeric:tabular-nums;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ---- stage & scaling ---- */
+  .stage{position:fixed; inset:0}
+  .deck{position:absolute; left:50%; top:50%; width:1280px; height:720px;
+    transform:translate(-50%,-50%); transform-origin:center center}
+
+  .slide{position:absolute; inset:0; padding:86px 96px 92px;
+    display:flex; flex-direction:column;
+    opacity:0; visibility:hidden; transition:opacity .5s ease; overflow:hidden}
+  .slide.active{opacity:1; visibility:visible}
+  /* 배경 장식 없음 — 장식은 고스트 번호와 규칙선이 전담한다.
+     opacity·mask·그라데이션 텍스트는 인쇄에서 사고를 낸다. */
+
+  /* ---- shared type ---- */
+  /* inline-block 으로 둔다(inline-flex + border-radius 는 별도 페인트 레이어를 만든다) */
+  /* .slide 는 flex column 이라 직계 자식은 기본이 stretch 다.
+     align-self 를 주지 않으면 표지의 배지가 슬라이드 폭 전체로 늘어난다. */
+  .eyebrow{display:inline-block; align-self:flex-start; padding:8px 15px; border-radius:8px;
+    background:var(--bgc,var(--a1b)); font-size:14px; font-weight:800; letter-spacing:.14em;
+    color:var(--ct,var(--a1t))}
+  .eyebrow .dot{display:none}
+  .eyebrow b{color:inherit; font-weight:800}
+  .eyebrow .en{color:var(--muted); font-weight:800; font-size:14px; letter-spacing:.14em; margin-left:9px}
+
+  .title{font-weight:800; letter-spacing:-.022em; line-height:1.08; color:var(--ink)}
+  .sub{color:var(--muted); font-weight:450}
+
+  /* 그라데이션 텍스트는 인쇄에서 통째로 사라진다 */
+  .mark{white-space:nowrap; color:var(--a1t)}
+
+  /* ---- entrance anim ---- */
+  [data-anim]{opacity:0; transform:translateY(18px)}
+  .slide.active [data-anim]{animation:rise .72s cubic-bezier(.2,.72,.18,1) both;
+    animation-delay:calc(var(--d,0) * .085s)}
+  @keyframes rise{to{opacity:1; transform:none}}
+
+  /* =================== SLIDE — cover / divider =================== */
+  .cover{justify-content:center}
+  .cover .eyebrow{margin-bottom:30px}
+  .cover h1{font-size:78px; letter-spacing:-.03em; line-height:1.04}
+  .cover .sub{font-size:24px; margin-top:26px; max-width:940px; line-height:1.5}
+  .cover .sub b{color:var(--ink); font-weight:700}
+  .legend{display:flex; gap:12px; margin-top:52px; align-items:center; flex-wrap:wrap}
+  .pill{display:inline-flex; align-items:center; gap:9px; padding:11px 18px; border-radius:999px;
+    font-size:16px; font-weight:600; color:var(--ink);
+    background:var(--card); border:1px solid var(--line); box-shadow:var(--sh-sm)}
+  .pill i{width:9px; height:9px; border-radius:50%; display:inline-block}
+  .pill.code i{background:var(--a1)}
+  .pill.ai   i{background:var(--a2)}
+  .pill.human i{background:var(--a3)}
+  .legend .arw{color:var(--faint); font-weight:500}
+
+  /* =================== shared header for content slides =================== */
+  /* 장 번호는 왼쪽 여백에 큰 고스트 숫자로 깐다(보고서와 같은 장치).
+     opacity 대신 옅은 단색(--bgc)으로 채운다. */
+  .head{margin-bottom:36px; position:relative}
+  .head[data-n]::before{content:attr(data-n); position:absolute; left:-90px; top:-14px; z-index:0;
+    width:68px; text-align:right; white-space:nowrap;
+    font-size:62px; font-weight:800; letter-spacing:-.05em; line-height:1;
+    color:var(--bgc,var(--a1b)); pointer-events:none; user-select:none}
+  .head > *{position:relative; z-index:1}
+  .head .title{font-size:44px; margin-top:18px}
+  .head .sub{font-size:19px; margin-top:14px; max-width:1000px}
+
+  /* =================== cards =================== */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; flex:1}
+  .cards.two{grid-template-columns:repeat(2,1fr)}
+  .card{position:relative; padding:28px 26px 24px; border-radius:14px;
+    background:var(--card); border:1px solid var(--line); border-top:3px solid var(--c,var(--a1));
+    overflow:hidden; display:flex; flex-direction:column}
+  .card .idx{font-size:14px; font-weight:800; letter-spacing:.14em; color:var(--ct,var(--a1t))}
+  .card h3{font-size:26px; font-weight:750; margin-top:16px; letter-spacing:-.01em; color:var(--ink)}
+  .card p{font-size:17px; line-height:1.6; color:var(--body); margin-top:13px}
+  .card p b{color:var(--ink); font-weight:700}
+  .card .tag{margin-top:auto; padding-top:16px; font-size:14px; color:var(--faint)}
+  /* service comparison list */
+  .card .svc{margin-top:15px; list-style:none; display:flex; flex-direction:column; flex:1; justify-content:flex-start}
+  .card .svc li{display:flex; align-items:baseline; gap:12px; padding:11px 0;
+    border-top:1px solid var(--line2); font-size:17px; font-weight:750; color:var(--ink); letter-spacing:-.01em}
+  .card .svc li:first-child{border-top:none}
+  .card .svc .k{flex:0 0 36px; font-size:11.5px; font-weight:800; letter-spacing:.02em; color:var(--ct,var(--a1t))}
+  .card .svc li.ext{margin-top:3px; border-top:1px dashed var(--line); color:var(--muted); font-weight:650; font-size:16px}
+  .card .svc li.ext .k{color:var(--faint)}
+
+  /* =================== flow (3 roles + banner) =================== */
+  .flow{display:grid; grid-template-columns:1fr 52px 1fr 52px 1fr; align-items:stretch; flex:1; margin-bottom:24px}
+  .role{position:relative; padding:26px 24px; border-radius:14px; overflow:hidden;
+    background:var(--card); border:1px solid var(--line); border-top:3px solid var(--rc,var(--a1));
+    display:flex; flex-direction:column}
+  .role .lab{display:inline-flex; align-items:center; gap:10px; font-size:15px; font-weight:800; letter-spacing:.10em; color:var(--rcT)}
+  .role .lab i{width:10px;height:10px;border-radius:50%;background:var(--rc)}
+  .role h3{font-size:28px; font-weight:800; margin-top:15px; letter-spacing:-.015em; color:var(--ink)}
+  .role .items{margin-top:13px; font-size:17.5px; color:var(--body); line-height:1.66}
+  .role .note{margin-top:auto; padding-top:16px; font-size:14px; color:var(--muted)}
+  .arrow{align-self:center; justify-self:center; font-size:30px; color:var(--faint)}
+  .banner{position:relative; border-radius:14px; padding:24px 32px; text-align:left; color:#fff;
+    background:var(--rule); border:0; font-size:24px; font-weight:750; letter-spacing:-.012em}
+  .banner b{color:#fff; font-weight:800}
+
+  /* =================== map (horizontal roadmap) =================== */
+  .map{display:flex; align-items:center; gap:0; flex:1}
+  .step{flex:1 1 0; min-width:0; position:relative; padding:20px 16px 18px; border-radius:12px;
+    background:var(--card); border:1px solid var(--line); border-top:3px solid var(--sc,var(--a1));
+    display:flex; flex-direction:column; overflow:hidden}
+  .step .n{font-size:13px; font-weight:800; letter-spacing:.14em; color:var(--sct,var(--a1t))}
+  .step h3{font-size:19px; font-weight:750; margin-top:12px; letter-spacing:-.012em; color:var(--ink)}
+  .step p{font-size:12.5px; color:var(--muted); margin-top:8px; line-height:1.4}
+  .marw{flex:0 0 26px; display:flex; align-items:center; justify-content:center; font-size:18px; color:var(--faint)}
+
+  .rail{margin-top:22px; display:flex; align-items:center; justify-content:space-between; gap:20px;
+    border-radius:12px; padding:18px 26px;
+    background:var(--tint); border:1px solid var(--line2); border-left:3px solid var(--a1)}
+  .rail .msg{font-size:19px; font-weight:750; color:var(--ink); letter-spacing:-.01em}
+  .rail .msg b{color:var(--a1t)}
+  .rail .tools{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+  .tool{display:inline-flex; align-items:center; gap:9px; padding:10px 16px; border-radius:999px;
+    background:var(--card); border:1px solid var(--line); box-shadow:var(--sh-sm);
+    font-size:14px; font-weight:600; color:var(--ink); white-space:nowrap}
+  .tool i{width:8px; height:8px; border-radius:50%; background:var(--faint)}
+
+  /* =================== duo panels =================== */
+  .mono{font-family:'SF Mono',ui-monospace,'Cascadia Code',Consolas,monospace; font-weight:700}
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1}
+  .panel{position:relative; border-radius:14px; background:var(--card); border:1px solid var(--line);
+    border-top:3px solid var(--pc,var(--a1));
+    padding:26px 28px 24px; display:flex; flex-direction:column; overflow:hidden}
+  .panel .pk{font-size:12.5px; font-weight:800; letter-spacing:.14em; color:var(--pct,var(--a1t))}
+  .panel > h3{font-size:23px; font-weight:800; margin-top:11px; letter-spacing:-.015em; color:var(--ink)}
+  .panel .txt{margin-top:13px; font-size:16.5px; line-height:1.6; color:var(--body)}
+  .panel .txt b{color:var(--ink); font-weight:700}
+  .pts{margin-top:15px; list-style:none; display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center}
+  .pts li{position:relative; padding-left:21px; font-size:16.5px; line-height:1.5; color:var(--body)}
+  .pts li::before{content:''; position:absolute; left:2px; top:9px; width:7px; height:7px; border-radius:50%; background:var(--pc,var(--a1))}
+  .pts li b{color:var(--ink); font-weight:750}
+  .pts li .m{font-family:'SF Mono',ui-monospace,'Cascadia Code',Consolas,monospace; font-weight:700; color:var(--pct,var(--a1t)); font-size:15px}
+
+  /* usage callout */
+  .usage{margin-top:auto; border-radius:13px; padding:14px 16px; background:var(--pbg,var(--a1b))}
+  .usage .ut{font-size:12px; font-weight:800; letter-spacing:.1em; color:var(--pct,var(--a1t))}
+  .usage .uw{margin-top:10px; list-style:none; display:flex; flex-direction:column; gap:8px}
+  .usage .uw li{font-size:13.5px; line-height:1.4; color:var(--body)}
+  .usage .uw li b{color:var(--pct,var(--a1t)); font-weight:800; margin-right:4px}
+  .usage .uw li.off,.usage .uw li.off b{color:var(--faint)}
+
+  /* definition rows (glossary style) */
+  .deflist{margin-top:6px; display:flex; flex-direction:column; flex:1; justify-content:center}
+  .row{padding:15px 0; border-top:1px solid var(--line2)}
+  .row:first-child{border-top:none}
+  .row .t{display:flex; align-items:center; gap:9px; font-size:18px; font-weight:800; color:var(--ink)}
+  .row .t .c{font-size:15px; padding:3px 10px; border-radius:7px; background:var(--pbg,var(--a1b)); color:var(--pct,var(--a1t))}
+  .row .d{font-size:14.5px; color:var(--muted); line-height:1.55; margin-top:6px}
+
+  /* wide single panel */
+  .wide{flex:1; display:flex; min-height:0}
+  .wide .panel{flex:1}
+  .wide .deflist{justify-content:space-evenly}
+  .wide .deflist .row{display:flex; align-items:center; gap:22px; padding:14px 0}
+  .wide .deflist .row .cw{flex:0 0 128px}
+  .wide .deflist .row .c{display:inline-block; font-size:15px; font-weight:800; padding:3px 10px;
+    border-radius:7px; background:var(--pbg,var(--a1b)); color:var(--pct,var(--a1t))}
+  .wide .deflist .row .k{flex:0 0 116px; font-size:18px; font-weight:800; color:var(--ink)}
+  .wide .deflist .row .d{flex:1; margin-top:0; font-size:15px; color:var(--muted); line-height:1.55}
+
+  /* =================== agenda / 목차 =================== */
+  .agenda{flex:1; display:flex; flex-direction:column; justify-content:center}
+  .arow{position:relative; display:flex; align-items:center; gap:26px;
+    padding:17px 10px 17px 4px; border-top:1px solid var(--line2)}
+  .arow:first-child{border-top:none}
+  .arow .no{position:relative; font-size:30px; font-weight:800; line-height:1; letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums; color:var(--act,var(--a1t)); min-width:52px; padding-left:16px}
+  .arow .no::before{content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:4px; height:26px; border-radius:4px; background:var(--ac,var(--a1))}
+  .arow .tx{flex:1; min-width:0; display:flex; align-items:baseline; gap:16px}
+  .arow .tx h3{font-size:23px; font-weight:750; color:var(--ink); letter-spacing:-.012em; white-space:nowrap}
+  .arow .tx p{font-size:14.5px; color:var(--muted); line-height:1.4}
+  .arow .en{font-size:11.5px; font-weight:700; letter-spacing:.14em; color:var(--faint); white-space:nowrap}
+
+  /* =================== 손질 모드 =================== */
+  /* Ctrl+Shift+E 로 켠다. 글자를 눌러 고치고 Ctrl+S 로 고친 파일을 받는다.
+     인쇄와 실측에는 영향이 없다(아래 @media print 와 display:none 기본값). */
+  #editbar{display:none; position:fixed; left:0; right:0; top:0; z-index:100;
+    padding:9px 20px; background:var(--rule); color:var(--bg);
+    font-size:13px; font-weight:600; letter-spacing:.01em}
+  #editbar b{color:var(--bg); font-weight:800; margin-right:12px}
+  #editbar kbd{display:inline-block; padding:1px 7px; margin:0 3px; border-radius:4px;
+    background:rgba(255,255,255,.18); font-family:'SF Mono',ui-monospace,Consolas,monospace;
+    font-size:12px}
+  body.editing #editbar{display:block}
+  /* 고칠 수 있는 자리를 눈에 보이게. 편집 중에만 뜬다. */
+  body.editing .slide.active .title:hover,
+  body.editing .slide.active .sub:hover,
+  body.editing .slide.active .eyebrow:hover,
+  body.editing .slide.active p:hover,
+  body.editing .slide.active li:hover,
+  body.editing .slide.active td:hover,
+  body.editing .slide.active h3:hover{outline:1px dashed var(--a3); outline-offset:3px}
+  body.editing svg text:hover{stroke:var(--a3); stroke-width:.4}
+
+  /* =================== chrome (fixed UI) =================== */
+  /* 진행바는 오른쪽 가장자리에 세로로 선다(내비게이션 레일과 같은 축). */
+  /* 내비게이션은 오른쪽에 세로로 모은다.
+     본문은 1280x720 캔버스 안에서 가로로 꽉 차므로, 조작부가 아래에 누우면
+     마지막 줄과 붙어 보인다. 옆으로 세우면 본문 흐름과 축이 갈린다. */
+  /* 좌하단이 읽는 자리이자 유일한 조작부다. 오른쪽 레일을 없애면서 둘을 합쳤다. */
+  .brandbar{position:fixed; left:30px; bottom:20px; z-index:20;
+    font-size:13.5px; font-weight:700; color:var(--muted)}
+  .brandbar span{color:var(--faint); font-weight:500}
+  /* 좌하단이 '어디쯤인가'를 통째로 진다 — 현재 부, 부 진행바, 전체 페이지.
+     오른쪽 레일은 없앴다. 조작은 키보드(←/→·↑/↓·F)와 스와이프로 한다. */
+  .brandbar .pnow{display:flex; align-items:baseline; gap:10px}
+  .brandbar .pnow b{color:var(--ink); font-weight:800; font-size:14.5px; letter-spacing:-.012em}
+  /* 부 진행바는 부 수만큼 칸으로 쪼갠다 — 지난 부는 꽉, 현재 부는 진행분만, 남은 부는 빈 칸.
+     한 요소가 '전체 몇 부 중 어디'와 '그 부 안에서 얼마나'를 동시에 진다.
+     이 바가 유일한 조작부다(오른쪽 레일을 없앴으므로). 칸을 누르면 그 부로 뛴다.
+     칸(i)은 16px 높이의 누를 자리, 눈에 보이는 3px 선은 그 안의 span 이다.
+     margin 은 선이 예전 자리에 그대로 앉도록 맞춘 값이다. */
+  .brandbar .pbar{display:flex; gap:4px; width:220px; margin-top:2px; margin-bottom:-6px}
+  .brandbar .pbar i{flex:1; height:16px; display:flex; align-items:center; cursor:pointer}
+  .brandbar .pbar span{display:block; width:100%; height:3px; border-radius:2px;
+    background:var(--line2); overflow:hidden; transition:height .18s}
+  .brandbar .pbar i:hover span{height:7px}
+  .brandbar .pbar b{display:block; height:100%; width:0; border-radius:2px; background:var(--a1);
+    transition:width .45s cubic-bezier(.2,.7,.2,1)}
+  /* 전체 진행은 여기 숫자가 진다 — 오른쪽 세로 진행바는 없앴다(같은 것을 두 번 그리지 않는다). */
+  .brandbar .dk{margin-top:8px; font-size:12.5px; font-weight:600; color:var(--faint)}
+  .brandbar .dk b{color:var(--muted); font-weight:800; letter-spacing:.03em;
+    font-variant-numeric:tabular-nums}
+  /* 부에 속하지 않는 장(표지·목차·마무리)에서는 부 '이름'만 접는다.
+     바는 남긴다 — 거기서도 눌러서 부로 뛸 수 있어야 하기 때문이다. */
+  .brandbar:not(.inpart) .pnow{visibility:hidden}
+
+  .hint{position:fixed; top:18px; right:24px; z-index:20; font-size:12.5px; color:var(--faint);
+    transition:opacity .6s}
+  .hint kbd{font-family:inherit; color:var(--muted); background:var(--card); border:1px solid var(--line);
+    border-radius:6px; padding:2px 7px; font-size:11.5px; box-shadow:var(--sh-sm)}
+
+  /* =================== print / PDF =================== */
+  @media print{
+    @page{size:1280px 720px; margin:0}
+    body{overflow:visible; background:var(--bg)}
+    .hint,.brandbar{display:none!important}
+    .stage{position:static}
+    .deck{position:static; transform:none!important; width:1280px; height:auto}
+    .slide{position:relative; inset:auto; width:1280px; height:720px; opacity:1!important;
+      visibility:visible!important; page-break-after:always; break-after:page}
+    [data-anim]{opacity:1!important; transform:none!important; animation:none!important}
+  }
+</style>
+</head>
+<body>
+  <div class="hint" id="hint"><kbd>↑</kbd> <kbd>↓</kbd> 이동 · <kbd>F</kbd> 전체화면</div>
+
+  <div class="stage">
+    <div class="deck" id="deck">
+
+      <!-- ================= 01 표지 ================= -->
+      <section class="slide cover active">
+        <div class="eyebrow" data-anim style="--d:0"><b>진단 보고</b><span class="en">· REVIEW</span></div>
+        <h1 class="title" data-anim style="--d:1">HTML 스킬 진단과<br><span class="mark">기준 스타일 재설계</span></h1>
+        <p class="sub" data-anim style="--d:2">규칙은 이미 좋다. 문제는 <b>스타일을 바꿀 수 없는 구조</b>다.<br>박상정 · 2026-08-27</p>
+      </section>
+
+      <!-- ================= 02 목차 ================= -->
+      <section class="slide">
+        <div class="head">
+          <div class="eyebrow" data-anim style="--d:0">목차<span class="en">AGENDA</span></div>
+          <h2 class="title" data-anim style="--d:1">오늘 볼 <span class="mark">다섯 갈래</span></h2>
+        </div>
+        <div class="agenda">
+          <div class="arow" data-anim style="--d:2; --ac:var(--a1); --act:var(--a1t)">
+            <div class="no">01</div>
+            <div class="tx"><h3>진단 범위</h3><p>무엇을 읽었고, 무엇을 보지 않았는가</p></div>
+            <div class="en">SCOPE</div>
+          </div>
+          <div class="arow" data-anim style="--d:3; --ac:var(--a2); --act:var(--a2t)">
+            <div class="no">02</div>
+            <div class="tx"><h3>이미 좋은 것</h3><p>실측 루프 · 우선순위표 · 사각지대 고지</p></div>
+            <div class="en">STRENGTH</div>
+          </div>
+          <div class="arow" data-anim style="--d:4; --ac:var(--a3); --act:var(--a3t)">
+            <div class="no">03</div>
+            <div class="tx"><h3>고칠 일곱 가지</h3><p>구조가 만든 문제와 운영이 만든 문제</p></div>
+            <div class="en">FINDINGS</div>
+          </div>
+          <div class="arow" data-anim style="--d:5; --ac:var(--a1); --act:var(--a1t)">
+            <div class="no">04</div>
+            <div class="tx"><h3>새 기준 스타일</h3><p>토큰 하나로 갈아끼우는 구조</p></div>
+            <div class="en">SYSTEM</div>
+          </div>
+          <div class="arow" data-anim style="--d:6; --ac:var(--a2); --act:var(--a2t)">
+            <div class="no">05</div>
+            <div class="tx"><h3>이행 절차</h3><p>기준 문서에서 스킬까지 다섯 단계</p></div>
+            <div class="en">PLAN</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 03 진단 범위 ================= -->
+      <section class="slide">
+        <div class="head" data-n="01" style="--bgc:var(--a1b); --ct:var(--a1t)">
+          <div class="eyebrow" data-anim style="--d:0">01 · SCOPE</div>
+          <h2 class="title" data-anim style="--d:1">무엇을 읽고 판단했는가</h2>
+        </div>
+        <div class="duo">
+          <div class="panel" data-anim style="--d:2; --pc:var(--a1); --pct:var(--a1t); --pbg:var(--a1b)">
+            <div class="pk">읽은 것</div>
+            <h3>파일 7개</h3>
+            <ul class="pts">
+              <li><b>SKILL.md</b> 두 개 <span class="m">238 / 83줄</span></li>
+              <li><b>template.html</b> 두 개 <span class="m">647 / 481줄</span></li>
+              <li><b>components.md</b> 두 개 <span class="m">218 / 175줄</span></li>
+              <li><b>printcheck.ps1</b> <span class="m">143줄</span></li>
+            </ul>
+          </div>
+          <div class="panel" data-anim style="--d:3; --pc:var(--risk); --pct:var(--riskT); --pbg:var(--riskB)">
+            <div class="pk">보지 않은 것</div>
+            <h3>실제 산출물</h3>
+            <ul class="pts">
+              <li>에이전트에게 스킬을 <b>쥐여 주고 만들게 한 결과물</b>을 채점하지 않았다</li>
+              <li>그러므로 이 진단은 <b>문서로서의 평가</b>다</li>
+              <li>스킬이 실제로 지켜지는지는 <b>별도의 시험</b>이 필요하다</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 04 이미 좋은 것 ================= -->
+      <section class="slide">
+        <div class="head" data-n="02" style="--bgc:var(--a2b); --ct:var(--a2t)">
+          <div class="eyebrow" data-anim style="--d:0">02 · STRENGTH</div>
+          <h2 class="title" data-anim style="--d:1">이미 드물게 좋은 세 가지</h2>
+          <p class="sub" data-anim style="--d:2">재설계에서 한 줄도 버리지 않는다.</p>
+        </div>
+        <div class="cards">
+          <div class="card" data-anim style="--d:3; --c:var(--a1); --ct:var(--a1t)">
+            <div class="idx">01</div>
+            <h3>실측 루프</h3>
+            <p>헤드리스 인쇄로 페이지별 채움률과 배치 결함을 잰다. 결과물을 <b>기계가 판정</b>한다.</p>
+            <p>그래서 "보기 좋게"가 아니라 <b>통과 아니면 실패</b>로 끝난다.</p>
+            <div class="tag">printcheck.ps1</div>
+          </div>
+          <div class="card" data-anim style="--d:4; --c:var(--a2); --ct:var(--a2t)">
+            <div class="idx">02</div>
+            <h3>우선순위표</h3>
+            <p>규칙 일곱 개에 순위를 매겨, 충돌할 때 <b>무엇을 포기하는지</b>까지 적었다.</p>
+            <p>대부분의 규칙 목록은 모든 항목이 동등하게 중요한 척한다. 그러면 <b>부딪히는 순간 판단이 멈춘다.</b></p>
+            <div class="tag">채움률은 가장 낮은 자리</div>
+          </div>
+          <div class="card" data-anim style="--d:5; --c:var(--a3); --ct:var(--a3t)">
+            <div class="idx">03</div>
+            <h3>가짜 통과 경고</h3>
+            <p>실측기가 채움률만 본다는 사실을 스스로 밝히고, 그 통과를 <b>가짜라고</b> 못 박았다.</p>
+            <p>없으면 다음 에이전트가 <b>통과 도장을 근거로</b> 잘못된 문서를 내보낸다.</p>
+            <div class="tag">검증의 사각지대를 같이 적는다</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 05 고칠 일곱 가지 ================= -->
+      <section class="slide">
+        <div class="head" data-n="03" style="--bgc:var(--a3b); --ct:var(--a3t)">
+          <div class="eyebrow" data-anim style="--d:0">03 · FINDINGS</div>
+          <h2 class="title" data-anim style="--d:1">고쳐야 할 일곱 가지</h2>
+          <p class="sub" data-anim style="--d:2">심각도 순이 아니라 <b>고치는 순서</b>다. 위를 고치면 아래가 따라 정리된다.</p>
+        </div>
+        <div class="duo">
+          <div class="panel" data-anim style="--d:3; --pc:var(--a1); --pct:var(--a1t); --pbg:var(--a1b)">
+            <div class="pk">구조가 만든 문제</div>
+            <ul class="pts">
+              <li><b>색 이름이 네 곳에 흩어짐</b> — 팔레트 하나 바꾸려면 네 번 고친다</li>
+              <li><b>토큰이 두 템플릿에 복붙</b> — 한쪽만 고치면 조용히 갈라진다</li>
+              <li><b>기준 파일이 사라짐</b> — 슬라이드 스킬이 가리키는 원본이 없다</li>
+            </ul>
+          </div>
+          <div class="panel" data-anim style="--d:4; --pc:var(--a2); --pct:var(--a2t); --pbg:var(--a2b)">
+            <div class="pk">운영이 만든 문제</div>
+            <ul class="pts">
+              <li><b>본문 3,534단어</b> — 호출마다 통째로 올라온다</li>
+              <li><b>description이 사양서</b> — 본문을 안 읽는 지름길이 생긴다</li>
+              <li><b>같은 금지를 7회 반복</b> — 늘려 쓴 쪽에 가깝다</li>
+              <li><b>슬라이드 검증 5개</b> — 보고서는 15개, 넘침을 눈으로만 본다</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 06 왜 못 바꿨나 ================= -->
+      <section class="slide">
+        <div class="head" data-n="04" style="--bgc:var(--a1b); --ct:var(--a1t)">
+          <div class="eyebrow" data-anim style="--d:0">04 · CAUSE</div>
+          <h2 class="title" data-anim style="--d:1">색 이름이 사는 네 곳</h2>
+          <p class="sub" data-anim style="--d:2">"색만 바꾸면 되지 않나"가 안 되는 이유는 취향이 아니라 <b>배선</b>이다.</p>
+        </div>
+        <div class="wide">
+          <div class="panel" data-anim style="--d:3; --pc:var(--a1); --pct:var(--a1t); --pbg:var(--a1b)">
+            <div class="deflist">
+              <div class="row"><div class="cw"><span class="c">1</span></div><div class="k">:root</div><div class="d"><span class="mono">--azure:#2E6BFF</span> — 정의</div></div>
+              <div class="row"><div class="cw"><span class="c">2</span></div><div class="k">template 본문</div><div class="d"><span class="mono">color:var(--azureT)</span> — 사용</div></div>
+              <div class="row"><div class="cw"><span class="c">3</span></div><div class="k">components.md</div><div class="d"><span class="mono">style="--c:var(--azure)"</span> — 복붙 원본</div></div>
+              <div class="row"><div class="cw"><span class="c">4</span></div><div class="k">SKILL.md 산문</div><div class="d">"azure → violet → amber 순환" — 지시</div></div>
+              <div class="row"><div class="cw"><span class="c">→</span></div><div class="k">결과</div><div class="d">템플릿 한 파일에만 색 이름이 <b>77회</b>. 하나만 고치면 나머지 셋이 옛 색을 주장한다</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 07 새 기준 스타일 ================= -->
+      <section class="slide">
+        <div class="head" data-n="05" style="--bgc:var(--a2b); --ct:var(--a2t)">
+          <div class="eyebrow" data-anim style="--d:0">05 · SYSTEM</div>
+          <h2 class="title" data-anim style="--d:1">새 기준 스타일</h2>
+          <p class="sub" data-anim style="--d:2">파이낸스 문서의 문법 위에 절제된 장식을 얹는다.</p>
+        </div>
+        <div class="wide">
+          <div class="panel" data-anim style="--d:3; --pc:var(--a2); --pct:var(--a2t); --pbg:var(--a2b)">
+            <div class="deflist">
+              <div class="row"><div class="cw"><span class="c">바탕</span></div><div class="k">순백</div><div class="d">그라데이션 면을 쓰지 않는다 — 인쇄에서 글자가 사라지는 사고를 배선에서 제거</div></div>
+              <div class="row"><div class="cw"><span class="c">서체</span></div><div class="k">Pretendard</div><div class="d">단일. 숫자는 문서 전체에서 자릿수를 맞춘다</div></div>
+              <div class="row"><div class="cw"><span class="c">액센트</span></div><div class="k">3색 순환</div><div class="d">장 단위로 순환. 경고는 별도 색으로 분리해 순환에서 뺀다</div></div>
+              <div class="row"><div class="cw"><span class="c">장식</span></div><div class="k">번호 + 규칙선</div><div class="d">고스트 번호와 규칙선만. 그라데이션 막대·테크 그리드·그림자 상자는 쓰지 않는다</div></div>
+              <div class="row"><div class="cw"><span class="c">원칙</span></div><div class="k">색은 한 곳에서</div><div class="d">장의 색은 번호가, 지표의 색은 숫자가 진다. 겹치면 위계가 무너진다</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 08 이행 절차 ================= -->
+      <section class="slide">
+        <div class="head" data-n="06" style="--bgc:var(--a3b); --ct:var(--a3t)">
+          <div class="eyebrow" data-anim style="--d:0">06 · PLAN</div>
+          <h2 class="title" data-anim style="--d:1">기준 문서에서 스킬까지</h2>
+        </div>
+        <div class="map">
+          <div class="step" data-anim style="--d:2; --sc:var(--a1); --sct:var(--a1t)">
+            <div class="n">STEP 01</div><h3>기준 문서 확정</h3>
+            <p>이 시점의 파일이 이후 모든 판단의 원본이 된다</p>
+          </div>
+          <div class="marw">›</div>
+          <div class="step" data-anim style="--d:3; --sc:var(--a2); --sct:var(--a2t)">
+            <div class="n">STEP 02</div><h3>인쇄 실측</h3>
+            <p>여백 배율의 정상 범위를 새로 재서 적는다</p>
+          </div>
+          <div class="marw">›</div>
+          <div class="step" data-anim style="--d:4; --sc:var(--a3); --sct:var(--a3t)">
+            <div class="n">STEP 03</div><h3>토큰 분리</h3>
+            <p>테마 파일 하나를 두 템플릿이 함께 본다</p>
+          </div>
+          <div class="marw">›</div>
+          <div class="step" data-anim style="--d:5; --sc:var(--a1); --sct:var(--a1t)">
+            <div class="n">STEP 04</div><h3>본문 정리</h3>
+            <p>색 이름을 걷고 CSS 해설을 레퍼런스로 내린다</p>
+          </div>
+          <div class="marw">›</div>
+          <div class="step" data-anim style="--d:6; --sc:var(--a2); --sct:var(--a2t)">
+            <div class="n">STEP 05</div><h3>슬라이드 맞추기</h3>
+            <p>같은 토큰 + 넘침 실측기를 붙인다</p>
+          </div>
+        </div>
+        <div class="rail" data-anim style="--d:7">
+          <div class="msg">뒤 단계가 앞 단계의 <b>실측 결과</b>를 쓴다 — 순서를 지킨다</div>
+          <div class="tools">
+            <span class="tool"><i></i>theme.css</span>
+            <span class="tool"><i></i>printcheck</span>
+            <span class="tool"><i></i>overflowcheck</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 09 마무리 ================= -->
+      <section class="slide cover">
+        <div class="eyebrow" data-anim style="--d:0">결론<span class="en">· CLOSE</span></div>
+        <h1 class="title" data-anim style="--d:1">기준이 없으면<br><span class="mark">사본이 갈라진다</span></h1>
+        <p class="sub" data-anim style="--d:2">스킬을 다시 쓰는 일이 아니라, 스킬이 쥐고 있던 것을 <b>제자리로 옮기는</b> 일이다.<br>규칙은 그대로 · 색은 토큰으로 · 분량은 레퍼런스로 · 검증은 양쪽에.</p>
+      </section>
+
+
+    </div>
+  </div>
+
+  <div class="brandbar" id="brandbar">
+    <div class="pnow"><b id="partname"></b></div>
+    <div class="pbar" id="pbar"></div>
+    <div class="dk"><b id="pageno"></b> · HTML 스킬 진단과 기준 스타일 재설계</div>
+  </div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const deck=document.getElementById('deck');
+  const N=slides.length;
+  let i=0;
+  // 부(제N부) 구간을 잡는다 — 구분 슬라이드(cover)의 eyebrow 가 '제N부'로 시작하면 새 부.
+  const brandbar=document.getElementById('brandbar');
+  const partName=document.getElementById('partname');
+  const pbar=document.getElementById('pbar');
+  const pageNo=document.getElementById('pageno');
+  const partOf=new Array(N).fill(null), parts=[];
+  {
+    let cur=null;
+    slides.forEach((s,k)=>{
+      const b=s.querySelector('.eyebrow b');
+      const label=b?b.textContent.trim():'';
+      if(s.classList.contains('cover')){
+        // '제N부' 구분 슬라이드는 새 부를 연다. 그 밖의 cover(표지·목차·마무리)는 부를 닫는다.
+        if(/^제\s*\d+부/.test(label)){
+          cur={name:label.replace(/\s*·\s*PART.*$/i,'').trim(), start:k, count:0, idx:parts.length};
+          parts.push(cur);
+        } else { cur=null; }
+      }
+      if(cur){ partOf[k]=cur; cur.count++; }
+    });
+    parts.forEach(p=>{
+      const seg=document.createElement('i'), track=document.createElement('span');
+      track.appendChild(document.createElement('b'));
+      seg.appendChild(track);
+      seg.title=p.name;
+      // 칸 안에서 누른 가로 위치가 그 부의 몇 번째 장인지를 정한다 — 모든 장에 닿는다.
+      seg.addEventListener('click',e=>{
+        const r=seg.getBoundingClientRect();
+        const t=Math.min(Math.max((e.clientX-r.left)/r.width,0),1);
+        go(p.start+Math.min(p.count-1,Math.floor(t*p.count)));
+      });
+      pbar.appendChild(seg);
+    });
+  }
+  const segs=[...pbar.querySelectorAll('b')];
+  const pad=n=>String(n).padStart(2,'0');
+  function go(n){
+    if(!Number.isFinite(n)) return;   // NaN 이 들어오면 활성 슬라이드가 통째로 사라진다
+    i=Math.max(0,Math.min(N-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    pageNo.textContent=pad(i+1)+' / '+pad(N);
+    const p=partOf[i];
+    if(p){
+      brandbar.classList.add('inpart');
+      partName.textContent=p.name;
+      segs.forEach((b,x)=>{ b.style.width = x<p.idx ? '100%' : x>p.idx ? '0%' : ((i-p.start+1)/p.count*100)+'%'; });
+    } else { brandbar.classList.remove('inpart'); }
+    history.replaceState(null,'','#'+(i+1));
+  }
+  function fit(){ const s=Math.min(innerWidth/1280, innerHeight/720); deck.style.transform=`translate(-50%,-50%) scale(${s})`; }
+  addEventListener('resize',fit);
+  addEventListener('keydown',e=>{
+    // 손질 모드에서는 글자를 치는 중이다. 페이지 키만 남기고 나머지는 넘긴다.
+    if(document.designMode==='on'){
+      if(e.key==='PageDown'){e.preventDefault(); go(i+1);}
+      else if(e.key==='PageUp'){e.preventDefault(); go(i-1);}
+      return;
+    }
+    if(['ArrowRight','ArrowDown','PageDown',' ','Spacebar'].includes(e.key)){e.preventDefault(); go(i+1);}
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault(); go(i-1);}
+    else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(N-1);}
+    else if(e.key==='f'||e.key==='F'){toggleFs();}
+  });
+
+  /* ---------------- 손질 모드 ----------------
+     Ctrl+Shift+E  켜고 끄기 · 글자를 눌러 그 자리에서 고친다(SVG 라벨 포함)
+     Ctrl+S        고친 상태 그대로 HTML 한 파일로 내려받는다
+     PageUp/Down   편집 중에도 장 넘기기
+     내려받은 파일이 곧 산출물이다. 빌더를 다시 돌리면 덮이므로, 손질은 마지막에 한다. */
+  const editbar=document.createElement('div');
+  editbar.id='editbar';
+  editbar.innerHTML='<b>손질 모드</b> 글자를 눌러 고칩니다 · <kbd>Alt</kbd>+클릭 색 바꾸기 · '+
+    '<kbd>Ctrl</kbd><kbd>S</kbd> 저장 · <kbd>PageUp</kbd><kbd>PageDown</kbd> 장 넘기기 · '+
+    '<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>E</kbd> 끄기';
+  document.body.appendChild(editbar);
+  function toggleEdit(){
+    const on=document.designMode!=='on';
+    document.designMode=on?'on':'off';
+    document.body.classList.toggle('editing',on);
+    if(!on) getSelection().removeAllRanges();
+  }
+  function saveHtml(){
+    const was=document.designMode==='on';
+    if(was) toggleEdit();                       // 편집 상태 표시가 파일에 안 남게
+    const clone=document.documentElement.cloneNode(true);
+    const bar=clone.querySelector('#editbar'); if(bar) bar.remove();
+    clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+    const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html;charset=utf-8'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=(document.title||'slides').replace(/[\\/:*?"<>|]/g,'_')+'.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    if(was) toggleEdit();
+  }
+  addEventListener('keydown',e=>{
+    if(e.ctrlKey&&e.shiftKey&&(e.key==='E'||e.key==='e')){e.preventDefault(); toggleEdit();}
+    else if(e.ctrlKey&&!e.shiftKey&&(e.key==='S'||e.key==='s')&&document.designMode==='on'){
+      e.preventDefault(); saveHtml();
+    }
+  });
+
+  /* ---- 색 바꾸기: Alt+클릭으로 토큰을 돌린다 ----
+     그림에서 가장 자주 고치는 것은 값이 아니라 '어느 것을 강조하느냐'다.
+     도형이 토큰 이름으로 칠해져 있어서 이름만 갈아 끼우면 된다.
+     되돌리려면 한 바퀴 더 돌린다. */
+  const PAINT=['var(--c-navy)','var(--c-teal)','var(--c-ochre)','var(--c-clay)',
+               'var(--c-slate)','var(--h3)'];
+  const PAINT_NAME={'var(--c-navy)':'네이비','var(--c-teal)':'틸','var(--c-ochre)':'오커',
+                    'var(--c-clay)':'클레이','var(--c-slate)':'회색','var(--h3)':'흐리게'};
+  function cyclePaint(el){
+    // fill 을 먼저 보고, 없으면 stroke(선 그래프)를 본다
+    const attr = (el.getAttribute('fill') && el.getAttribute('fill')!=='none') ? 'fill' : 'stroke';
+    const cur = el.getAttribute(attr) || '';
+    let i = PAINT.indexOf(cur);
+    // 토큰이 아닌 색이면 첫 토큰부터 시작한다
+    const next = PAINT[(i+1) % PAINT.length];
+    el.setAttribute(attr, next);
+    return PAINT_NAME[next] + ' (' + attr + ')';
+  }
+  addEventListener('click', e=>{
+    if(document.designMode!=='on' || !e.altKey) return;
+    const t=e.target;
+    if(!(t instanceof SVGElement)) return;
+    if(!/^(rect|circle|path|polyline|polygon|line|ellipse)$/.test(t.tagName)) return;
+    e.preventDefault(); e.stopPropagation();
+    const name=cyclePaint(t);
+    const tip=document.getElementById('editbar');
+    if(tip){ tip.dataset.msg = tip.dataset.msg || tip.innerHTML;
+             tip.innerHTML='<b>색 바꿈</b> '+name+' · 한 바퀴 더 돌리면 되돌아옵니다';
+             clearTimeout(window.__paintT);
+             window.__paintT=setTimeout(()=>{tip.innerHTML=tip.dataset.msg;},1800); }
+  }, true);
+
+  function toggleFs(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();} else {document.exitFullscreen&&document.exitFullscreen();} }
+  let sx=0, sy=0;
+  addEventListener('touchstart',e=>{sx=e.touches[0].clientX; sy=e.touches[0].clientY;},{passive:true});
+  addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    const d=Math.abs(dx)>=Math.abs(dy)?dx:dy;
+    if(Math.abs(d)>50) go(i+(d<0?1:-1));
+  },{passive:true});
+  setTimeout(()=>{const h=document.getElementById('hint'); if(h) h.style.opacity=0;},4200);
+  const start=parseInt((location.hash||'').replace('#',''));
+  fit();
+  go((start>=1&&start<=N)?start-1:0);
+</script>
+</body>
+</html>
